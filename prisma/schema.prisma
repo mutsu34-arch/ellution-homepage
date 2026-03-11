@@ -1,0 +1,124 @@
+// Prisma schema - 엘루션 포털
+// 사용: npx prisma db push (개발) 또는 prisma migrate dev (마이그레이션)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+// 배포 시 PostgreSQL 사용:
+// provider = "postgresql"
+// url      = env("DATABASE_URL")
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  passwordHash  String?   // credentials 로그인 시
+  name          String?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts   Account[]
+  sessions   Session[]
+  subscriptions Subscription[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model WebApp {
+  id          String   @id @default(cuid())
+  slug        String   @unique  // 하위 도메인에 사용 (예: app-a)
+  name        String
+  description String?
+  iconUrl     String?
+  appUrl      String   // 실제 웹앱 주소 (예: https://app-a.yourdomain.com)
+  stripePriceId String? // 개별 구독용 Stripe Price ID
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  packageApps PackageApp[]
+  subscriptions Subscription[]
+}
+
+model Package {
+  id          String   @id @default(cuid())
+  slug        String   @unique  // 예: pro-bundle
+  name        String
+  description String?
+  stripePriceId String? // 패키지 구독용 Stripe Price ID
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  apps    PackageApp[]
+  subscriptions Subscription[]
+}
+
+model PackageApp {
+  id        String  @id @default(cuid())
+  packageId String
+  webAppId  String
+
+  package Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  webApp  WebApp  @relation(fields: [webAppId], references: [id], onDelete: Cascade)
+
+  @@unique([packageId, webAppId])
+}
+
+// 구독: 사용자가 개별 앱 또는 패키지를 구독
+model Subscription {
+  id                 String   @id @default(cuid())
+  userId             String
+  stripeSubscriptionId String? @unique
+  stripeCustomerId   String?
+  status             String   // active, canceled, past_due 등
+  currentPeriodEnd   DateTime?
+
+  // 개별 앱 구독
+  webAppId           String?
+  // 패키지 구독
+  packageId          String?
+
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  webApp  WebApp?  @relation(fields: [webAppId], references: [id], onDelete: Cascade)
+  package Package? @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([webAppId])
+  @@index([packageId])
+}
