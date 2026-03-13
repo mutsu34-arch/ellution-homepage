@@ -1,1 +1,0 @@
-:root{--foreground:#0a0a0a;--background:#fafafa;--accent:#2563eb;--muted:#71717a}@media (prefers-color-scheme:dark){:root{--foreground:#fafafa;--background:#0a0a0a;--muted:#a1a1aa}}body{color:var(--foreground);background:var(--background)}
