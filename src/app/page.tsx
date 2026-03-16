@@ -234,9 +234,8 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 py-10 sm:py-12">
           <div className="text-zinc-600 text-sm space-y-2 mb-6">
             <p className="font-semibold text-zinc-800">엘루션</p>
-            <p>서울특별시 강남구 테헤란로 123 엘루션빌딩 5층</p>
-            <p>대표전화: 02-1234-5678</p>
-            <p>이메일: contact@ellution.co.kr</p>
+            <p>사업장 소재지: 서울특별시 서초구 서초중앙로 49, 609호(서초동, 동양라디안루키)</p>
+            <p>이메일: ellutionsoft@gmail.com</p>
           </div>
           <p className="text-zinc-500 text-sm">
             Copyright © 2024 Elution. All rights reserved.
