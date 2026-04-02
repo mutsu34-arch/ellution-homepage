@@ -10,16 +10,6 @@ function StudyCardIcon() {
   );
 }
 
-function SoftCardIcon() {
-  return (
-    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-[#d1fae5] flex items-center justify-center flex-shrink-0">
-      <svg className="w-10 h-10 sm:w-12 sm:h-12 text-[#047857]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-      </svg>
-    </div>
-  );
-}
-
 export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#F9FAFB]">
@@ -55,22 +45,22 @@ export default function HomePage() {
           </Link>
           <nav className="flex flex-wrap items-center gap-2 sm:gap-3">
             <Link
-              href="#service-intro"
+              href="#business-overview"
               className="px-3 py-1.5 rounded-lg bg-[#dbeafe] text-[#1e40af] text-sm font-medium hover:bg-[#bfdbfe] transition-colors"
             >
-              서비스 소개
+              사업 개요
             </Link>
             <Link
-              href="#subscription-guide"
+              href="#core-features"
               className="px-3 py-1.5 rounded-lg bg-[#d1fae5] text-[#047857] text-sm font-medium hover:bg-[#a7f3d0] transition-colors"
             >
-              구독 안내
+              주요 기능
             </Link>
             <Link
-              href="#customer-support"
+              href="#compliance"
               className="px-3 py-1.5 rounded-lg bg-[#fef3c7] text-[#b45309] text-sm font-medium hover:bg-[#fde68a] transition-colors"
             >
-              고객지원
+              준수사항
             </Link>
             <Link href="/login" className="text-zinc-600 hover:text-zinc-900 transition-colors">
               로그인
@@ -100,10 +90,11 @@ export default function HomePage() {
             엘루션
           </span>
         </h1>
-        <p className="text-zinc-600 text-center max-w-2xl mb-14 text-lg leading-relaxed">
-          공무원 시험부터 복잡한 법률 실무까지, 실무자의 시각으로 만든 가장 정확한 웹앱을 경험하세요.
+        <p className="text-zinc-600 text-center max-w-3xl mb-14 text-lg leading-relaxed">
+          변호사시험, 공무원 시험 등 법학 과목의 공개 기출문제를 체계화하고, AI 기반 학습 보조 기능으로
+          수험생의 학습 효율을 높이는 교육 플랫폼입니다.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 w-full max-w-4xl mb-14">
+        <div className="grid grid-cols-1 gap-6 sm:gap-8 w-full max-w-4xl mb-14">
           <article
             className="bg-white rounded-2xl p-6 sm:p-8 flex flex-col transition-all hover:shadow-xl"
             style={{ boxShadow: "0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)" }}
@@ -124,26 +115,6 @@ export default function HomePage() {
               학습 시작하기
             </Link>
           </article>
-          <article
-            className="bg-white rounded-2xl p-6 sm:p-8 flex flex-col transition-all hover:shadow-xl"
-            style={{ boxShadow: "0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)" }}
-          >
-            <div className="mb-5">
-              <SoftCardIcon />
-            </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-zinc-900 mb-3">
-              엘루션 소프트
-            </h2>
-            <p className="text-zinc-600 leading-relaxed mb-6 flex-1">
-              사실관계 정리 앱, 변제충당 계산기 등 법률 실무 효율화 도구
-            </p>
-            <Link
-              href="/soft"
-              className="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#047857] text-white font-semibold hover:bg-[#065f46] transition-colors shadow-md hover:shadow-lg"
-            >
-              실무 도구 보기
-            </Link>
-          </article>
         </div>
         <div className="flex gap-4">
           <Link
@@ -160,71 +131,117 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {/* 서비스 소개 - Why Elution? */}
+        {/* 법률 자문 배제 고지 */}
+        <section className="w-full max-w-6xl mx-auto mt-2 px-4">
+          <div className="rounded-2xl p-5 sm:p-6 bg-rose-50 border border-rose-200">
+            <p className="text-rose-800 text-sm sm:text-base leading-relaxed">
+              본 서비스는 교육용 플랫폼으로, 개별 사건의 권리·의무 판단, 승소 가능성 예측 등 법률 상담 및 자문 기능을
+              제공하지 않습니다. 구체적인 상담은 법률 전문가를 통해 진행하시기 바랍니다.
+            </p>
+          </div>
+        </section>
+
+        {/* 사업 개요 및 추진 배경 */}
         <section
-          id="service-intro"
+          id="business-overview"
           className="w-full max-w-6xl mx-auto mt-24 sm:mt-32 px-4 scroll-mt-20"
         >
           <div className="rounded-3xl p-8 sm:p-12 bg-[#eff6ff] border border-[#bfdbfe]/50">
             <h2 className="text-2xl sm:text-3xl font-bold text-[#1e40af] text-center mb-12">
-              Why Elution?
+              사업 개요 및 추진 배경
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
               <article className="bg-white rounded-2xl p-6 sm:p-8 text-zinc-700 leading-relaxed shadow-sm hover:shadow-md transition-shadow">
                 <h3 className="font-semibold text-zinc-900 text-lg mb-3">
-                  변호사 직접 개발
+                  사업명 및 운영 형태
                 </h3>
                 <p>
-                  현직 변호사가 실무와 학습의 페인 포인트를 분석하여 직접 코딩하고 설계했습니다.
+                  엘루션(Ellution)은 1인 운영 개인사업자로, 인공지능 기술을 활용해 법학 교육의 효율화와 대중화를
+                  목표로 합니다.
                 </p>
               </article>
               <article className="bg-white rounded-2xl p-6 sm:p-8 text-zinc-700 leading-relaxed shadow-sm hover:shadow-md transition-shadow">
                 <h3 className="font-semibold text-zinc-900 text-lg mb-3">
-                  정확한 데이터
+                  대상 콘텐츠
                 </h3>
                 <p>
-                  법률 계산기, 사실관계 정리 등 0.1%의 오차도 허용하지 않는 법률 로직을 담았습니다.
+                  변호사시험, 공무원 시험 등 국가고시 법학 과목의 공개 기출문제를 체계화한 학습 퀴즈 및 해설
+                  데이터베이스를 제공합니다.
                 </p>
               </article>
               <article className="bg-white rounded-2xl p-6 sm:p-8 text-zinc-700 leading-relaxed shadow-sm hover:shadow-md transition-shadow">
                 <h3 className="font-semibold text-zinc-900 text-lg mb-3">
-                  맞춤형 패키지
+                  서비스 확장 계획
                 </h3>
                 <p>
-                  수험생을 위한 교육 앱과 전문가를 위한 업무 보조 앱을 필요한 만큼 구독하여 사용하세요.
+                  법학 중심 서비스를 기반으로 학습 알고리즘을 고도화해 영어, 한국사, 한자 등 일반 수험 과목까지
+                  순차적으로 확대할 예정입니다.
                 </p>
               </article>
             </div>
           </div>
         </section>
 
-        {/* 구독 안내 */}
+        {/* 주요 기능 및 운영 방식 */}
         <section
-          id="subscription-guide"
+          id="core-features"
           className="w-full max-w-6xl mx-auto mt-12 sm:mt-16 px-4 scroll-mt-20"
         >
           <div className="rounded-3xl p-8 sm:p-12 bg-[#ecfdf5] border border-[#a7f3d0]/50">
             <h2 className="text-2xl sm:text-3xl font-bold text-[#047857] text-center mb-8">
-              구독 안내
+              주요 기능 및 운영 방식
             </h2>
-            <p className="text-zinc-700 text-center max-w-2xl mx-auto leading-relaxed">
-              엘루션 스터디와 엘루션 소프트는 개별 앱 단위로 구독하거나, 패키지로 함께 이용하실 수 있습니다. 로그인 후 대시보드에서 원하는 서비스를 선택해 주세요.
-            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 text-zinc-700 leading-relaxed">
+              <article className="bg-white rounded-2xl p-6 shadow-sm">
+                <h3 className="font-semibold text-zinc-900 mb-2">기출문제 DB 및 맞춤 학습</h3>
+                <p>
+                  법학 과목 기출문항을 DB화하고, 사용자 취약 구간을 분석해 오답 노트 자동 생성 및 반복 학습을 지원합니다.
+                </p>
+              </article>
+              <article className="bg-white rounded-2xl p-6 shadow-sm">
+                <h3 className="font-semibold text-zinc-900 mb-2">법령·판례 용어 해설</h3>
+                <p>
+                  국어사전과 법령 용어 사전 정의를 기반으로 난해한 용어를 초보 학습자도 이해하기 쉬운 형태로 제공합니다.
+                </p>
+              </article>
+              <article className="bg-white rounded-2xl p-6 shadow-sm">
+                <h3 className="font-semibold text-zinc-900 mb-2">변호사 직접 감수</h3>
+                <p>
+                  제공되는 학습용 해설과 데이터는 대표 변호사가 직접 법률적 정확성을 검토하여 신뢰도를 확보합니다.
+                </p>
+              </article>
+              <article className="bg-white rounded-2xl p-6 shadow-sm">
+                <h3 className="font-semibold text-zinc-900 mb-2">직접 운영</h3>
+                <p>
+                  변호사 본인이 AI 학습 로직을 직접 기획·운영하며, 교육 콘텐츠 품질 관리까지 일관되게 수행합니다.
+                </p>
+              </article>
+            </div>
           </div>
         </section>
 
-        {/* 고객지원 */}
+        {/* 변호사법 준수 및 직무 독립성 */}
         <section
-          id="customer-support"
+          id="compliance"
           className="w-full max-w-6xl mx-auto mt-12 sm:mt-16 px-4 scroll-mt-20"
         >
           <div className="rounded-3xl p-8 sm:p-12 bg-[#fffbeb] border border-[#fde68a]/60">
             <h2 className="text-2xl sm:text-3xl font-bold text-[#b45309] text-center mb-8">
-              고객지원
+              변호사법 준수 및 직무 독립성
             </h2>
-            <p className="text-zinc-700 text-center max-w-2xl mx-auto leading-relaxed">
-              서비스 이용 문의나 기술 지원이 필요하시면 하단 연락처로 연락해 주세요.
-            </p>
+            <div className="bg-white rounded-2xl p-6 sm:p-8 text-zinc-700 leading-relaxed shadow-sm space-y-3">
+              <p>
+                본 서비스는 공개된 판례·법령·기출문제를 기반으로 한 교육용 프로그램이며, 개별 사건의 사실관계를
+                판단하거나 법률적 조언을 제공하지 않습니다.
+              </p>
+              <p>
+                비변호사와의 수익 배분이나 공동 경영 형태를 지양하며, 변호사 본인이 독립적으로 기획·운영합니다.
+              </p>
+              <p>
+                변호사 자격 표시는 교육 콘텐츠의 신뢰성 보증 목적에 한정되며, 사건 수임 유도를 위한 홍보 수단으로
+                사용하지 않습니다.
+              </p>
+            </div>
           </div>
         </section>
       </main>
