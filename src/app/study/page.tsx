@@ -1,11 +1,11 @@
 import Link from "next/link";
 
 const STUDY_ITEMS = [
-  { name: "행정법큐", slug: "admin-law", color: "bg-blue-600 hover:bg-blue-700" },
-  { name: "민법큐", slug: "civil-law", color: "bg-emerald-600 hover:bg-emerald-700" },
-  { name: "형법큐", slug: "criminal-law", color: "bg-violet-600 hover:bg-violet-700" },
-  { name: "한국사큐", slug: "korean-history", color: "bg-amber-600 hover:bg-amber-700" },
-  { name: "한자큐", slug: "hanja", color: "bg-rose-600 hover:bg-rose-700" },
+  { name: "행정법Q", slug: "admin-law", color: "bg-blue-600 hover:bg-blue-700" },
+  { name: "민법Q", slug: "civil-law", color: "bg-emerald-600 hover:bg-emerald-700" },
+  { name: "형법Q", slug: "criminal-law", color: "bg-violet-600 hover:bg-violet-700" },
+  { name: "한국사Q", slug: "korean-history", color: "bg-amber-600 hover:bg-amber-700" },
+  { name: "한자Q", slug: "hanja", color: "bg-rose-600 hover:bg-rose-700" },
 ] as const;
 
 export default function StudyPage() {
@@ -14,7 +14,7 @@ export default function StudyPage() {
       <header className="border-b border-zinc-200 dark:border-zinc-800">
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
           <Link href="/" className="text-xl font-semibold">
-            엘루션
+            엘루션 스터디
           </Link>
           <nav className="flex gap-4">
             <Link href="/" className="text-zinc-600 dark:text-zinc-400 hover:underline">
