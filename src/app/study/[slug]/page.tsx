@@ -18,6 +18,37 @@ export default async function StudySlugPage({
   const name = SLUG_TO_NAME[slug] ?? slug;
   const appUrl = STUDY_APP_URLS[slug];
 
+  // 임시 점검: 포털에서 행정법Q 진입을 차단하고 안내 화면만 노출
+  if (slug === "admin-law") {
+    return (
+      <div className="min-h-screen flex flex-col bg-zinc-50">
+        <header className="border-b border-zinc-200 bg-white">
+          <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+            <Link href="/study" className="text-lg font-semibold hover:opacity-80">
+              ← 엘루션 스터디
+            </Link>
+            <span className="text-sm text-zinc-500">서비스 점검중</span>
+          </div>
+        </header>
+        <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-16">
+          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 sm:p-8">
+            <h1 className="text-2xl font-bold text-amber-900 mb-3">행정법Q 점검 안내</h1>
+            <p className="text-amber-900 leading-relaxed mb-6">
+              현재 일부 기능 안정화 작업으로 인해 포털에서의 행정법Q 접속을 임시 중단했습니다.
+              점검이 완료되면 다시 이용하실 수 있습니다.
+            </p>
+            <Link
+              href="/study"
+              className="inline-flex items-center px-4 py-2 rounded-lg bg-amber-700 text-white hover:bg-amber-800 transition-colors"
+            >
+              과목 목록으로 돌아가기
+            </Link>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   if (appUrl) {
     return (
       <div className="min-h-screen flex flex-col">
