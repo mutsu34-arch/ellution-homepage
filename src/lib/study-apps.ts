@@ -4,7 +4,7 @@
  * 여기 기본값이 있으면 .env 없이도 동작합니다.
  */
 const DEFAULT_STUDY_APP_URLS: Record<string, string> = {
-  "admin-law": "https://quiz-seven-black.vercel.app/",
+  "admin-law": "https://adminlawq-b9dad.web.app",
 };
 
 export const STUDY_APP_URLS: Record<string, string | undefined> = {

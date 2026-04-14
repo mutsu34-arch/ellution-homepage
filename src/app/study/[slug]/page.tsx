@@ -2,11 +2,11 @@ import Link from "next/link";
 import { STUDY_APP_URLS } from "@/lib/study-apps";
 
 const SLUG_TO_NAME: Record<string, string> = {
-  "admin-law": "행정법큐",
-  "civil-law": "민법큐",
-  "criminal-law": "형법큐",
-  "korean-history": "한국사큐",
-  hanja: "한자큐",
+  "admin-law": "행정법Q",
+  "civil-law": "민법Q",
+  "criminal-law": "형법Q",
+  "korean-history": "한국사Q",
+  hanja: "한자Q",
 };
 
 export default async function StudySlugPage({
