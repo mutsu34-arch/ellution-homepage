@@ -7,30 +7,31 @@ export async function middleware(request: NextRequest) {
   const maintenanceMode = process.env.MAINTENANCE_MODE === "true";
   const adminKey = process.env.MAINTENANCE_ADMIN_KEY;
 
-  if (maintenanceMode && !path.startsWith("/api/")) {
-    if (path.startsWith("/__admin/unlock")) {
-      const key = request.nextUrl.searchParams.get("key");
-      if (adminKey && key === adminKey) {
-        const redirectUrl = new URL("/", request.url);
-        const response = NextResponse.redirect(redirectUrl);
-        response.cookies.set("maintenance_admin", "1", {
-          httpOnly: true,
-          sameSite: "lax",
-          secure: process.env.NODE_ENV === "production",
-          path: "/",
-          maxAge: 60 * 60 * 24 * 7,
-        });
-        return response;
-      }
-      return NextResponse.redirect(new URL("/maintenance", request.url));
-    }
-
-    if (path.startsWith("/__admin/lock")) {
-      const redirectUrl = new URL("/maintenance", request.url);
+  if (!path.startsWith("/api/") && path.startsWith("/__admin/unlock")) {
+    const key = request.nextUrl.searchParams.get("key");
+    if (adminKey && key === adminKey) {
+      const redirectUrl = new URL("/", request.url);
       const response = NextResponse.redirect(redirectUrl);
-      response.cookies.delete("maintenance_admin");
+      response.cookies.set("maintenance_admin", "1", {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7,
+      });
       return response;
     }
+    return NextResponse.redirect(new URL("/maintenance", request.url));
+  }
+
+  if (!path.startsWith("/api/") && path.startsWith("/__admin/lock")) {
+    const redirectUrl = new URL("/maintenance", request.url);
+    const response = NextResponse.redirect(redirectUrl);
+    response.cookies.delete("maintenance_admin");
+    return response;
+  }
+
+  if (maintenanceMode && !path.startsWith("/api/")) {
 
     const isAdmin = request.cookies.get("maintenance_admin")?.value === "1";
     const isAllowedPath = path.startsWith("/maintenance");
