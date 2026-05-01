@@ -181,6 +181,24 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="relative z-10 border-t border-zinc-200 bg-white mt-24">
         <div className="max-w-6xl mx-auto px-4 py-10 sm:py-12">
+          <div className="mb-6 rounded-xl border border-rose-200 bg-rose-50 p-4 sm:p-5">
+            <p className="text-rose-800 text-sm sm:text-base leading-relaxed">
+              본 서비스는 교육용 플랫폼으로, 개별 사건의 권리·의무 판단, 승소 가능성 예측 등 법률 상담 및 자문 기능을
+              제공하지 않습니다. 구체적인 상담은 법률 전문가를 통해 진행하시기 바랍니다.
+            </p>
+          </div>
+
+          <div className="mb-8">
+            <Link
+              href="https://adminlawq.ellution.co.kr/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center rounded-xl bg-[#1e40af] px-5 py-3 text-sm font-semibold text-white hover:bg-[#1e3a8a] transition-colors"
+            >
+              행정법Q 바로가기
+            </Link>
+          </div>
+
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
             <div className="text-zinc-600 text-sm space-y-2">
               <p className="font-semibold text-zinc-800">엘루션</p>
