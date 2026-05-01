@@ -4,6 +4,46 @@ import type { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
+  const maintenanceMode = process.env.MAINTENANCE_MODE === "true";
+  const adminKey = process.env.MAINTENANCE_ADMIN_KEY;
+
+  if (maintenanceMode && !path.startsWith("/api/")) {
+    if (path.startsWith("/__admin/unlock")) {
+      const key = request.nextUrl.searchParams.get("key");
+      if (adminKey && key === adminKey) {
+        const redirectUrl = new URL("/", request.url);
+        const response = NextResponse.redirect(redirectUrl);
+        response.cookies.set("maintenance_admin", "1", {
+          httpOnly: true,
+          sameSite: "lax",
+          secure: process.env.NODE_ENV === "production",
+          path: "/",
+          maxAge: 60 * 60 * 24 * 7,
+        });
+        return response;
+      }
+      return NextResponse.redirect(new URL("/maintenance", request.url));
+    }
+
+    if (path.startsWith("/__admin/lock")) {
+      const redirectUrl = new URL("/maintenance", request.url);
+      const response = NextResponse.redirect(redirectUrl);
+      response.cookies.delete("maintenance_admin");
+      return response;
+    }
+
+    const isAdmin = request.cookies.get("maintenance_admin")?.value === "1";
+    const isAllowedPath = path.startsWith("/maintenance");
+
+    if (!isAdmin && !isAllowedPath) {
+      return NextResponse.redirect(new URL("/maintenance", request.url));
+    }
+
+    if (isAdmin && path.startsWith("/maintenance")) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
   if (path.startsWith("/dashboard") || path.startsWith("/api/checkout")) {
     const secret = process.env.NEXTAUTH_SECRET;
     const token = secret
@@ -22,5 +62,8 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/api/checkout/:path*"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)",
+    "/api/checkout/:path*",
+  ],
 };
