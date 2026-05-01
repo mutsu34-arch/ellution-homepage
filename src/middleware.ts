@@ -6,6 +6,10 @@ export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const maintenanceMode = process.env.MAINTENANCE_MODE === "true";
   const adminKey = process.env.MAINTENANCE_ADMIN_KEY;
+  const hostname = request.nextUrl.hostname;
+  const cookieDomain = hostname.endsWith("ellution.co.kr")
+    ? ".ellution.co.kr"
+    : undefined;
 
   if (!path.startsWith("/api/") && path.startsWith("/__admin/unlock")) {
     const key = request.nextUrl.searchParams.get("key");
@@ -17,6 +21,7 @@ export async function middleware(request: NextRequest) {
         sameSite: "lax",
         secure: process.env.NODE_ENV === "production",
         path: "/",
+        domain: cookieDomain,
         maxAge: 60 * 60 * 24 * 7,
       });
       return response;
@@ -27,7 +32,14 @@ export async function middleware(request: NextRequest) {
   if (!path.startsWith("/api/") && path.startsWith("/__admin/lock")) {
     const redirectUrl = new URL("/maintenance", request.url);
     const response = NextResponse.redirect(redirectUrl);
-    response.cookies.delete("maintenance_admin");
+    response.cookies.set("maintenance_admin", "", {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      domain: cookieDomain,
+      maxAge: 0,
+    });
     return response;
   }
 
