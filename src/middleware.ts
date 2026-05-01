@@ -13,20 +13,27 @@ export async function middleware(request: NextRequest) {
 
   if (!path.startsWith("/api/") && path.startsWith("/__admin/unlock")) {
     const key = request.nextUrl.searchParams.get("key");
-    if (adminKey && key === adminKey) {
-      const redirectUrl = new URL("/", request.url);
-      const response = NextResponse.redirect(redirectUrl);
-      response.cookies.set("maintenance_admin", "1", {
-        httpOnly: true,
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
-        path: "/",
-        domain: cookieDomain,
-        maxAge: 60 * 60 * 24 * 7,
-      });
-      return response;
+    if (!adminKey) {
+      return new NextResponse(
+        "MAINTENANCE_ADMIN_KEY is not configured in deployment environment.",
+        { status: 500 },
+      );
     }
-    return NextResponse.redirect(new URL("/maintenance", request.url));
+    if (key !== adminKey) {
+      return new NextResponse("Invalid maintenance admin key.", { status: 401 });
+    }
+
+    const redirectUrl = new URL("/", request.url);
+    const response = NextResponse.redirect(redirectUrl);
+    response.cookies.set("maintenance_admin", "1", {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      domain: cookieDomain,
+      maxAge: 60 * 60 * 24 * 7,
+    });
+    return response;
   }
 
   if (!path.startsWith("/api/") && path.startsWith("/__admin/lock")) {
