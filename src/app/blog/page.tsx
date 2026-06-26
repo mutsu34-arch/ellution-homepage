@@ -23,13 +23,20 @@ export default function BlogPage() {
         <section className="grid grid-cols-1 gap-5">
           {blogPosts.map((post) => (
             <article key={post.slug} className="rounded-2xl border border-zinc-200 bg-white p-6 sm:p-7">
-              <p className="text-sm text-zinc-500 mb-2">
+              <p className="text-sm text-zinc-500 mb-3">
                 {new Date(post.date).toLocaleDateString("ko-KR")}
               </p>
-              <h2 className="text-xl font-semibold text-zinc-900 mb-3">{post.title}</h2>
+              <h2 className="mb-4 text-xl font-semibold leading-snug">
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="block w-full rounded-lg border-2 border-zinc-200 bg-zinc-50 px-4 py-3.5 text-left text-zinc-900 shadow-sm transition hover:border-[#1e40af] hover:bg-blue-50/80 hover:text-[#1e40af] active:scale-[0.99] sm:px-5 sm:py-4"
+                >
+                  {post.title}
+                </Link>
+              </h2>
               <p className="text-zinc-700 leading-relaxed mb-5">{post.excerpt}</p>
               {post.tags && post.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-5">
+                <div className="flex flex-wrap gap-2">
                   {post.tags.slice(0, 4).map((tag) => (
                     <span
                       key={`${post.slug}-${tag}`}
@@ -40,9 +47,6 @@ export default function BlogPage() {
                   ))}
                 </div>
               )}
-              <Link href={`/blog/${post.slug}`} className="text-[#1e40af] font-semibold hover:underline">
-                글 읽기
-              </Link>
             </article>
           ))}
         </section>

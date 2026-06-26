@@ -107,14 +107,18 @@ export default function HomePage() {
             {latestPosts.map((post) => (
               <article
                 key={post.slug}
-                className="group rounded-2xl border border-zinc-200 bg-white p-5 transition-all hover:-translate-y-0.5 hover:shadow-lg"
+                className="rounded-2xl border border-zinc-200 bg-white p-5 transition-all hover:-translate-y-0.5 hover:shadow-lg"
               >
                 <p className="mb-2 text-xs text-zinc-500">{new Date(post.date).toLocaleDateString("ko-KR")}</p>
-                <h3 className="mb-3 line-clamp-2 text-lg font-semibold leading-snug text-zinc-900">{post.title}</h3>
-                <p className="mb-5 line-clamp-3 text-sm leading-relaxed text-zinc-600">{post.excerpt}</p>
-                <Link href={`/blog/${post.slug}`} className="text-sm font-semibold text-[#1e40af] group-hover:underline">
-                  자세히 보기
-                </Link>
+                <h3 className="mb-4 text-base font-semibold leading-snug sm:text-lg">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="block w-full rounded-lg border-2 border-zinc-200 bg-zinc-50 px-3 py-3 text-left text-zinc-900 shadow-sm transition hover:border-[#1e40af] hover:bg-blue-50/80 hover:text-[#1e40af] active:scale-[0.99] sm:px-4 sm:py-3.5"
+                  >
+                    <span className="line-clamp-2">{post.title}</span>
+                  </Link>
+                </h3>
+                <p className="line-clamp-3 text-sm leading-relaxed text-zinc-600">{post.excerpt}</p>
               </article>
             ))}
           </div>
