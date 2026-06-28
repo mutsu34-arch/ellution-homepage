@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { author } from "@/lib/author";
 
 export const metadata: Metadata = {
   title: "회사소개 | 엘루션",
@@ -58,6 +59,72 @@ export default function AboutPage() {
             단순 암기가 아니라 판례의 논점 구조와 함정 포인트를 이해하도록 구성하며, 실제 시험과 실무에서 바로
             활용할 수 있는 형태로 콘텐츠를 제공합니다.
           </p>
+        </section>
+
+        <section className="mb-6 rounded-2xl border border-zinc-200 bg-white p-7 sm:p-9">
+          <h2 className="mb-4 text-xl font-bold text-zinc-900">대표 변호사 소개</h2>
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+            <div className="inline-flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-blue-100 text-2xl font-bold text-[#1e40af]">
+              {author.name.charAt(0)}
+            </div>
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-baseline gap-x-2">
+                <p className="text-lg font-bold text-zinc-900">{author.name}</p>
+                <p className="text-sm text-zinc-500">
+                  {author.title} · {author.affiliation}
+                </p>
+              </div>
+              <p className="mt-1 text-sm font-medium text-[#1e40af]">{author.summary}</p>
+              <p className="mt-3 leading-relaxed text-zinc-700">{author.bio}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {author.badges.map((badge) => (
+                  <span
+                    key={badge}
+                    className="inline-flex rounded-md bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-700"
+                  >
+                    {badge}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+              <h3 className="mb-2 text-sm font-semibold text-zinc-900">학력</h3>
+              <ul className="space-y-1.5">
+                {author.education.map((item) => (
+                  <li key={item} className="flex gap-2 text-sm leading-relaxed text-zinc-700">
+                    <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#1e40af]" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="mb-2 text-sm font-semibold text-zinc-900">자격</h3>
+              <ul className="space-y-1.5">
+                {author.certifications.map((item) => (
+                  <li key={item} className="flex gap-2 text-sm leading-relaxed text-zinc-700">
+                    <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#1e40af]" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <Link
+              href={author.profileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-700 transition hover:border-[#1e40af] hover:text-[#1e40af]"
+            >
+              법률사무소 엘루션에서 자세히 보기
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
         </section>
 
         <section className="mb-6 rounded-2xl border border-zinc-200 bg-white p-7 sm:p-9">

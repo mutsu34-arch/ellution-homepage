@@ -3,6 +3,7 @@ import Link from "next/link";
 import Script from "next/script";
 import { notFound } from "next/navigation";
 import { blogPosts, getPostBySlug } from "@/lib/blog";
+import { author } from "@/lib/author";
 
 type BlogDetailPageProps = {
   params: {
@@ -99,8 +100,15 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
     dateModified: post.date,
     inLanguage: "ko-KR",
     author: {
-      "@type": "Organization",
-      name: "엘루션",
+      "@type": "Person",
+      name: author.name,
+      jobTitle: author.title,
+      description: author.bio,
+      url: author.profileUrl,
+      worksFor: {
+        "@type": "Organization",
+        name: author.affiliation,
+      },
     },
     publisher: {
       "@type": "Organization",
@@ -221,20 +229,44 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
           </section>
         )}
 
-        <section className="mt-8 rounded-xl border border-zinc-200 bg-white p-5">
-          <h2 className="text-base font-semibold text-zinc-900 mb-3">작성자</h2>
-          <div className="flex items-start gap-3">
-            <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-[#1e40af] font-bold">
-              E
+        <section className="mt-8 rounded-xl border border-zinc-200 bg-white p-5 sm:p-6">
+          <h2 className="text-base font-semibold text-zinc-900 mb-4">작성자 · 검수</h2>
+          <div className="flex items-start gap-4">
+            <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-100 text-lg font-bold text-[#1e40af]">
+              {author.name.charAt(0)}
             </div>
-            <div>
-              <p className="text-sm font-semibold text-zinc-900">엘루션 콘텐츠팀 (변호사 검수)</p>
-              <p className="text-sm text-zinc-700 leading-relaxed mt-1">
-                엘루션은 행정법 수험생을 위한 판례·기출 기반 학습 콘텐츠를 제작합니다. 실제 시험에서 바로 적용 가능한
-                논점 구조와 함정 포인트 중심으로 콘텐츠를 제공합니다.
-              </p>
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                <p className="text-base font-semibold text-zinc-900">{author.name}</p>
+                <p className="text-sm text-zinc-500">{author.title} · {author.affiliation}</p>
+              </div>
+              <p className="mt-0.5 text-xs font-medium text-[#1e40af]">{author.summary}</p>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-700">{author.bio}</p>
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {author.badges.map((badge) => (
+                  <span
+                    key={badge}
+                    className="inline-flex rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-700"
+                  >
+                    {badge}
+                  </span>
+                ))}
+              </div>
+              <a
+                href={author.profileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-[#1e40af] hover:underline"
+              >
+                변호사 프로필 보기
+                <span aria-hidden="true">→</span>
+              </a>
             </div>
           </div>
+          <p className="mt-4 border-t border-zinc-100 pt-3 text-xs leading-relaxed text-zinc-500">
+            본 칼럼은 수험 학습을 위한 개념 정리이며, 엘루션의 편집 기준에 따라 변호사의 검수를 거칩니다. 구체적
+            사안의 법적 판단은 별도의 법률 상담이 필요합니다.
+          </p>
         </section>
 
         <div className="mt-10">
