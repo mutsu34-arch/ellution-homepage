@@ -77,14 +77,20 @@ export default function ContactPage() {
         <section className="mb-6 rounded-2xl border border-zinc-200 bg-white p-7 sm:p-9">
           <h2 className="mb-4 text-xl font-bold text-zinc-900">연락처</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-5">
+            <a
+              href="mailto:ellutionsoft@gmail.com"
+              className="block rounded-xl border border-zinc-200 bg-zinc-50 p-5 transition hover:border-zinc-300 hover:bg-zinc-100"
+            >
               <p className="mb-1 text-sm text-zinc-500">이메일</p>
               <p className="text-lg font-semibold text-zinc-900">ellutionsoft@gmail.com</p>
-            </div>
-            <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-5">
+            </a>
+            <a
+              href="tel:+82-70-7954-2912"
+              className="block rounded-xl border border-zinc-200 bg-zinc-50 p-5 transition hover:border-zinc-300 hover:bg-zinc-100"
+            >
               <p className="mb-1 text-sm text-zinc-500">전화</p>
               <p className="text-lg font-semibold text-zinc-900">070-7954-2912</p>
-            </div>
+            </a>
           </div>
           <p className="mt-4 text-sm leading-relaxed text-zinc-500">
             이메일 문의는 영업일 기준 순차적으로 답변드립니다. 문의 유형과 내용을 함께 적어주시면 더 빠른 안내가
