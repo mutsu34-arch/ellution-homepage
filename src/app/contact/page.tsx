@@ -22,6 +22,7 @@ const inquiryTypes = [
   {
     title: "법률 상담 안내",
     desc: "구체적 사건 상담은 법률사무소 엘루션을 통해 별도로 진행됩니다.",
+    cta: { label: "법률사무소 엘루션 홈페이지", href: "https://www.lawfirm.ellution.co.kr/" },
   },
 ];
 
@@ -51,8 +52,23 @@ export default function ContactPage() {
           <div className="space-y-3">
             {inquiryTypes.map((item) => (
               <div key={item.title} className="rounded-xl border border-zinc-200 bg-zinc-50 p-5">
-                <p className="text-base font-semibold text-zinc-900">{item.title}</p>
-                <p className="mt-1.5 text-sm leading-relaxed text-zinc-600">{item.desc}</p>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-base font-semibold text-zinc-900">{item.title}</p>
+                    <p className="mt-1.5 text-sm leading-relaxed text-zinc-600">{item.desc}</p>
+                  </div>
+                  {item.cta ? (
+                    <Link
+                      href={item.cta.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-rose-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-800 active:scale-[0.99]"
+                    >
+                      {item.cta.label}
+                      <span aria-hidden="true">→</span>
+                    </Link>
+                  ) : null}
+                </div>
               </div>
             ))}
           </div>
