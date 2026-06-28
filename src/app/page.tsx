@@ -183,9 +183,14 @@ export default function HomePage() {
           </div>
 
           <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div className="text-sm text-zinc-600">
+            <div className="text-sm leading-relaxed text-zinc-600">
               <p className="font-semibold text-zinc-800">엘루션</p>
-              <p className="mt-1">연락처: ellutionsoft@gmail.com</p>
+              <p className="mt-1">대표자: 정대영</p>
+              <p>사업자등록번호: 588-07-03369</p>
+              <p>통신판매업신고: 제2026-서울서초-1742호</p>
+              <p>주소: 서울특별시 서초구 서초중앙로 49, 6층 609호(서초동, 동양라디안루키)</p>
+              <p>전화: 070-7954-2912</p>
+              <p>이메일: ellutionsoft@gmail.com</p>
             </div>
             <nav className="flex flex-wrap gap-4 text-sm text-zinc-600">
               <Link href="/about" className="hover:text-zinc-900">
