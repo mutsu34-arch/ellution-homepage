@@ -76,21 +76,44 @@ export default function HomePage() {
         </section>
 
         <section className="mb-10 grid grid-cols-1 gap-4 md:grid-cols-3">
-          <article className="rounded-2xl border border-zinc-200 bg-white p-5">
+          <Link
+            href="https://adminlawq.ellution.co.kr/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group rounded-2xl border border-zinc-200 bg-white p-5 transition hover:border-zinc-300 hover:shadow-sm"
+          >
             <p className="text-xs text-zinc-500">학습 서비스</p>
             <p className="mt-1 text-lg font-semibold">행정법Q</p>
             <p className="mt-2 text-sm leading-relaxed text-zinc-600">OX 인출 훈련과 오답노트 자동화로 회독 효율을 높입니다.</p>
-          </article>
-          <article className="rounded-2xl border border-zinc-200 bg-white p-5">
+            <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-[#1e40af]">
+              학습 앱 바로가기
+              <span aria-hidden="true" className="transition group-hover:translate-x-0.5">→</span>
+            </span>
+          </Link>
+          <Link
+            href="/blog"
+            className="group rounded-2xl border border-zinc-200 bg-white p-5 transition hover:border-zinc-300 hover:shadow-sm"
+          >
             <p className="text-xs text-zinc-500">전문 콘텐츠</p>
             <p className="mt-1 text-lg font-semibold">Latest Insights</p>
             <p className="mt-2 text-sm leading-relaxed text-zinc-600">판례 핵심과 함정을 빠르게 정리한 수험생 친화형 칼럼.</p>
-          </article>
-          <article className="rounded-2xl border border-zinc-200 bg-white p-5">
+            <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-[#1e40af]">
+              전문가 칼럼 보기
+              <span aria-hidden="true" className="transition group-hover:translate-x-0.5">→</span>
+            </span>
+          </Link>
+          <Link
+            href="/about"
+            className="group rounded-2xl border border-zinc-200 bg-white p-5 transition hover:border-zinc-300 hover:shadow-sm"
+          >
             <p className="text-xs text-zinc-500">운영 원칙</p>
             <p className="mt-1 text-lg font-semibold">신뢰 기반 운영</p>
             <p className="mt-2 text-sm leading-relaxed text-zinc-600">정책 페이지, SEO, 광고 컴플라이언스를 체계적으로 관리합니다.</p>
-          </article>
+            <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-[#1e40af]">
+              회사소개 보기
+              <span aria-hidden="true" className="transition group-hover:translate-x-0.5">→</span>
+            </span>
+          </Link>
         </section>
 
         <section className="mb-12">
