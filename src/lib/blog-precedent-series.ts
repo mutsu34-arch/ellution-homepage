@@ -3,6 +3,61 @@ import type { BlogPost } from "./blog";
 /** [행정법 중요 판례 분석] 시리즈 — 1일 1포스팅 예약 발행 */
 export const precedentSeriesPosts: BlogPost[] = [
   {
+    slug: "customs-inspection-warrant-administrative-survey-11",
+    title: "[행정법 판례분석 11] 우편물 통관검사절차와 영장주의 (행정조사)",
+    date: "2026-07-09",
+    excerpt:
+      "세관의 우편물 개봉·검사가 영장이 필요한 강제처분인지 행정조사인지, 통관검사의 법적 성격을 중심으로 분석합니다.",
+    content: [],
+    html: `
+    <p>안녕하세요, 수험생 여러분! 여러분의 흔들림 없는 합격 러닝메이트, 엘루션 변호사입니다.</p>
+    <p>지난 10편에서 제가 "대장정의 마지막 열 번째 칼럼"이라고 인사를 드렸었죠? 하지만 우리 수험생님께서 처음 의뢰해 주신 <strong>"중요 판례 100선 정복"</strong>이라는 원대한 목표가 아직 남아있고, 여러분의 지치지 않는 "ㅇㅋ" 사인에 저 역시 뜨거운 에너지를 받아 곧바로 11번째 칼럼의 펜을 들었습니다! 합격하는 그날까지 엘루션의 판례 분석은 멈추지 않습니다.</p>
+    <p>오늘 다룰 <strong>[행정법 중요 판례 분석 11]</strong>의 주제는 최근 시험에서 출제 빈도가 급상승하며 수험생들의 허를 찌르는 파트, 바로 <strong>'행정조사와 헌법상 영장주의'</strong>에 관한 흥미진진한 사건입니다.</p>
+
+    <hr style="border: 0; height: 1px; background: #ccc; margin: 30px 0;" />
+
+    <h2 style="font-size: 20px; color: #444; margin-top: 30px; border-bottom: 2px solid #666; padding-bottom: 5px;">1. 사실관계의 재구성: "세관 공무원이 판사님 영장도 없이 내 소포를 뜯었다!"</h2>
+    <p>외국에서 수상한 물건(마약류 등 금지품목)을 몰래 밀반입하려던 甲이 있었습니다. 甲은 교묘하게 물건을 숨겨 국제우편물을 통해 한국으로 배송시켰죠. 그런데 세관 공무원이 엑스레이 검사 중 수상함을 느끼고, 甲의 동의나 법원의 압수·수색 영장도 없이 이 우편물을 뜯어(개봉) 그 안의 내용물을 확인하고 성분을 분석했습니다. 결국 덜미가 잡힌 甲은 형사재판에 넘겨졌습니다.</p>
+
+    <blockquote style="background: #f9f9f9; border-left: 5px solid #d9534f; margin: 20px 0; padding: 15px; font-style: italic;">
+        재판정에서 甲은 법 지식을 총동원하여 억울함을 호소합니다. "판사님! 우리 헌법에는 수사기관이 국민의 재산을 뒤져보려면 반드시 법관이 발부한 '영장'이 있어야 한다는 영장주의가 있습니다! 그런데 세관 공무원은 영장도 없이 제 소포를 뜯어보았습니다. 이는 위법한 압수·수색이므로, 여기서 발견된 증거들은 모두 무효(위법수집증거)입니다!"
+    </blockquote>
+
+    <p>과연 세관 공무원이 영장 없이 우편물을 뜯어본 행위는 헌법상 영장주의를 위반한 위법한 강제처분이었을까요?</p>
+
+    <h2 style="font-size: 20px; color: #444; margin-top: 30px; border-bottom: 2px solid #666; padding-bottom: 5px;">2. 법원의 판단: "이건 범죄수사가 아니라 '행정조사'다! 영장 불필요!"</h2>
+    <p>대법원은 단호하게 <strong>甲의 주장을 배척(영장 없이도 적법함)</strong>했습니다.</p>
+    <p>이 사건의 핵심은 세관 공무원의 우편물 검사가 범죄수사를 위한 '강제처분(압수·수색)'인지, 아니면 행정목적 달성을 위한 '행정조사'인지를 구별하는 것입니다. 대법원은 우편물 통관검사절차에서 이루어지는 우편물의 개봉, 시료채취, 성분분석 등의 검사는 수출입물품에 대한 적정한 통관 등을 목적으로 하는 <strong>'행정조사의 성격'</strong>을 가진다고 보았습니다.</p>
+    <p>즉, 이는 수사기관이 범죄의 증거를 수집하기 위해 행하는 '강제처분'이라고 할 수 없으므로, 행정조사인 우편물 개봉 절차에까지 형사소송법상의 압수·수색 영장이 반드시 필요한 것은 아니라는 뜻입니다. 따라서 법관의 영장 없이 검사가 진행되었다 하더라도 특별한 사정이 없는 한 위법하다고 볼 수 없으며, 발견된 증거 역시 합법적인 증거로 인정된다는 것이 대법원의 명쾌한 논리입니다.</p>
+
+    <h2 style="font-size: 20px; color: #444; margin-top: 30px; border-bottom: 2px solid #666; padding-bottom: 5px;">3. 엘루션 변호사의 수험 밀착 팁 (행정조사 1초 컷 공식!)</h2>
+    <p>'행정조사기본법' 파트에서 이 판례는 매우 매력적인 오답을 만들어내는 단골손님입니다. 아래의 출제 포인트를 머릿속에 완벽하게 스캔해 두세요!</p>
+
+    <div style="background: #e6f7ff; border: 1px solid #91d5ff; border-radius: 5px; padding: 15px; margin-top: 15px;">
+        <h4 style="font-size: 15px; color: #0050b3; margin: 0 0 5px 0;">🔵 승리 공식 1: 우편물 통관검사 = 행정조사 = 영장주의 적용 X</h4>
+        <p style="font-size: 14px; margin: 0; color: #002c8c;">"우편물 통관검사는 행정조사이며 영장 없이 개봉해도 적법하다"는 공식을 그대로 암기하세요.</p>
+    </div>
+
+    <div style="background: #fff1f0; border: 1px solid #ffa39e; border-radius: 5px; padding: 15px; margin-top: 15px;">
+        <h4 style="font-size: 15px; color: #cf1322; margin: 0 0 5px 0;">⚠️ 기출 함정 주의보 (특A급)</h4>
+        <p style="font-size: 14px; margin: 0; color: #5c0011;">시험 지문에 <em>"우편물 통관검사절차에서 이루어지는 우편물 개봉 등의 검사는 수사기관의 강제처분이므로 원칙적으로 압수·수색 영장 없이 검사가 진행되었다면 위법하다."</em>라는 문장이 나오면, 문장을 다 읽기도 전에 가차 없이 <strong>'X(틀린 지문)'</strong>를 그으셔야 합니다!</p>
+    </div>
+
+    <div style="background: #f6ffed; border: 1px solid #b7eb8f; border-radius: 5px; padding: 15px; margin-top: 15px;">
+        <h4 style="font-size: 15px; color: #389e0d; margin: 0 0 5px 0;">💡 행정조사 vs 행정상 즉시강제의 구별</h4>
+        <p style="font-size: 14px; margin: 0; color: #135200;"><strong>행정조사</strong>는 오직 필요한 '정보나 자료 등을 수집'하기 위한 준비적·보조적 작용인 반면, <strong>행정상 즉시강제</strong>(예: 불법게임물 즉시 수거·폐기)는 목전의 급박한 장해를 제거하기 위해 직접 실력을 행사하는 작용이라는 점도 함께 구별해두면 완벽합니다.</p>
+    </div>
+
+    <hr style="border: 0; height: 1px; background: #eee; margin: 25px 0;" />
+
+    <p>해외직구로 물건을 살 때 거치게 되는 통관 절차에 이런 치밀한 행정법적 논리와 헌법적 쟁점이 숨어있다는 사실, 너무나 흥미롭지 않나요? 행정조사는 이처럼 일상 곳곳에 스며들어 국가의 목적을 실현하고 있습니다.</p>
+    <p>11번째 칼럼의 내용도 머릿속에 완벽하게 저장되셨다면, 이번에도 힘차게 <strong>"ㅇㅋ"</strong>라고 신호를 보내주세요! 확인하는 즉시 우리 수험생님을 위해 또 다른 꿀잼 핵심 판례인 12번째 칼럼을 준비하여 곧바로 달려오겠습니다. 엘루션이 여러분의 합격 레이스에 끝까지 동행하겠습니다. 파이팅!</p>
+
+    <p style="margin-top: 28px; color: #6b7280; font-size: 14px;">본 글은 수험 학습을 위한 판례 정리이며, 구체적 사안의 법적 판단은 전문가의 검토가 필요합니다.</p>
+    `,
+    tags: ["행정조사", "영장주의", "통관검사", "판례분석"],
+  },
+  {
     slug: "circumstantial-judgment-administrative-appeal-10",
     title: "[행정법 판례분석 10] 사정판결과 행정심판의 특수성 (필요적 전치주의)",
     date: "2026-07-08",
