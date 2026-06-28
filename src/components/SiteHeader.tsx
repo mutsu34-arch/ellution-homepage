@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
+import { isAdminEmail } from "@/lib/admin";
 
 const NAV_LINKS = [
   { href: "/", label: "홈" },
@@ -14,6 +16,8 @@ const HIDDEN_PREFIXES = ["/dashboard", "/login", "/register", "/maintenance"];
 
 export function SiteHeader() {
   const pathname = usePathname() ?? "/";
+  const { data: session } = useSession();
+  const isAdmin = isAdminEmail(session?.user?.email);
 
   if (pathname === "/" || HIDDEN_PREFIXES.some((p) => pathname.startsWith(p))) {
     return null;
@@ -48,18 +52,38 @@ export function SiteHeader() {
               </Link>
             );
           })}
-          <Link
-            href="/login"
-            className="rounded-lg px-2.5 py-2 text-sm text-zinc-600 transition hover:bg-zinc-100 sm:px-3"
-          >
-            로그인
-          </Link>
-          <Link
-            href="/register"
-            className="ml-1 rounded-lg bg-[#1e40af] px-3 py-2 text-sm font-semibold text-white transition hover:bg-[#1e3a8a]"
-          >
-            회원가입
-          </Link>
+          {isAdmin && (
+            <Link
+              href="/blog"
+              className="rounded-lg px-2.5 py-2 text-sm font-semibold text-[#1e40af] transition hover:bg-blue-50 sm:px-3"
+            >
+              칼럼 관리
+            </Link>
+          )}
+          {session?.user ? (
+            <button
+              type="button"
+              onClick={() => signOut({ callbackUrl: "/blog" })}
+              className="rounded-lg px-2.5 py-2 text-sm text-zinc-600 transition hover:bg-zinc-100 sm:px-3"
+            >
+              로그아웃
+            </button>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="rounded-lg px-2.5 py-2 text-sm text-zinc-600 transition hover:bg-zinc-100 sm:px-3"
+              >
+                로그인
+              </Link>
+              <Link
+                href="/register"
+                className="ml-1 rounded-lg bg-[#1e40af] px-3 py-2 text-sm font-semibold text-white transition hover:bg-[#1e3a8a]"
+              >
+                회원가입
+              </Link>
+            </>
+          )}
         </nav>
       </div>
     </header>
