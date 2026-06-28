@@ -48,14 +48,18 @@ export function SiteHeader() {
               </Link>
             );
           })}
-          <a
-            href="https://adminlawq.ellution.co.kr/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ml-1 hidden rounded-lg bg-[#1e40af] px-3 py-2 text-sm font-semibold text-white transition hover:bg-[#1e3a8a] sm:inline-flex"
+          <Link
+            href="/login"
+            className="rounded-lg px-2.5 py-2 text-sm text-zinc-600 transition hover:bg-zinc-100 sm:px-3"
           >
-            행정법Q
-          </a>
+            로그인
+          </Link>
+          <Link
+            href="/register"
+            className="ml-1 rounded-lg bg-[#1e40af] px-3 py-2 text-sm font-semibold text-white transition hover:bg-[#1e3a8a]"
+          >
+            회원가입
+          </Link>
         </nav>
       </div>
     </header>
