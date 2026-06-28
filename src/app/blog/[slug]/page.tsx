@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
 import { notFound } from "next/navigation";
-import { getPublishedPosts, getPublishedPostBySlug } from "@/lib/blog";
+import { getPublishedPosts } from "@/lib/blog";
+import { getResolvedPublishedPost } from "@/lib/posts-store";
 import { author } from "@/lib/author";
+import { EditPostButton } from "@/components/EditPostButton";
 
 export const revalidate = 3600;
 
@@ -14,7 +16,7 @@ type BlogDetailPageProps = {
 };
 
 export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
-  const post = getPublishedPostBySlug(params.slug);
+  const post = await getResolvedPublishedPost(params.slug);
 
   if (!post) {
     return {
@@ -46,7 +48,7 @@ export function generateStaticParams() {
 }
 
 type ContentBlock = {
-  type: "h2" | "h3" | "p";
+  type: "h2" | "h3" | "p" | "li";
   text: string;
   id?: string;
 };
@@ -73,6 +75,13 @@ function buildContentBlocks(lines: string[]): ContentBlock[] {
       };
     }
 
+    if (line.startsWith("- ")) {
+      return {
+        type: "li",
+        text: line.replace(/^- /, "").trim(),
+      };
+    }
+
     return {
       type: "p",
       text: line,
@@ -80,14 +89,14 @@ function buildContentBlocks(lines: string[]): ContentBlock[] {
   });
 }
 
-export default function BlogDetailPage({ params }: BlogDetailPageProps) {
-  const post = getPublishedPostBySlug(params.slug);
+export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
+  const post = await getResolvedPublishedPost(params.slug);
 
   if (!post) {
     notFound();
   }
 
-  const contentBlocks = buildContentBlocks(post.content);
+  const contentBlocks = buildContentBlocks(post.contentLines);
   const tableOfContents = contentBlocks.filter((block) => block.type === "h2" || block.type === "h3");
   const relatedPosts = getPublishedPosts()
     .filter((item) => item.slug !== post.slug)
@@ -134,7 +143,10 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
         }}
       />
       <article className="max-w-3xl mx-auto rounded-2xl border border-zinc-200 bg-white p-7 sm:p-10">
-        <p className="text-sm text-zinc-500 mb-3">{new Date(post.date).toLocaleDateString("ko-KR")}</p>
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <p className="text-sm text-zinc-500">{new Date(post.date).toLocaleDateString("ko-KR")}</p>
+          <EditPostButton slug={post.slug} />
+        </div>
 
         {post.html ? (
           <div className="blog-rich" dangerouslySetInnerHTML={{ __html: post.html }} />
@@ -185,6 +197,15 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
                     <h3 key={block.id} id={block.id} className="text-lg font-semibold text-zinc-900 mt-6 mb-2 scroll-mt-24">
                       {block.text}
                     </h3>
+                  );
+                }
+
+                if (block.type === "li") {
+                  return (
+                    <p key={`${post.slug}-li-${block.text}`} className="mb-2 flex gap-2 pl-1">
+                      <span aria-hidden="true" className="text-[#1e40af]">•</span>
+                      <span>{block.text}</span>
+                    </p>
                   );
                 }
 

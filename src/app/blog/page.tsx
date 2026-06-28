@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPublishedPosts } from "@/lib/blog";
+import { getResolvedPublishedList } from "@/lib/posts-store";
 
 export const metadata: Metadata = {
   title: "전문가 칼럼 | 엘루션",
@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600;
 
-export default function BlogPage() {
-  const blogPosts = getPublishedPosts();
+export default async function BlogPage() {
+  const blogPosts = await getResolvedPublishedList();
 
   return (
     <main className="min-h-screen bg-[#F9FAFB] px-4 py-16">

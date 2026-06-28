@@ -1,7 +1,20 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import { compare } from "bcryptjs";
 import { prisma } from "./db";
+
+const providers: NextAuthOptions["providers"] = [];
+
+// 구글 OAuth 자격증명이 설정된 경우에만 구글 로그인 활성화
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  providers.push(
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+  );
+}
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -12,6 +25,7 @@ export const authOptions: NextAuthOptions = {
     signIn: "/login",
   },
   providers: [
+    ...providers,
     CredentialsProvider({
       name: "credentials",
       credentials: {
