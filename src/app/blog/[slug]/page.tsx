@@ -133,61 +133,68 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
       />
       <article className="max-w-3xl mx-auto rounded-2xl border border-zinc-200 bg-white p-7 sm:p-10">
         <p className="text-sm text-zinc-500 mb-3">{new Date(post.date).toLocaleDateString("ko-KR")}</p>
-        <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-5 leading-tight">{post.title}</h1>
-        <p className="text-zinc-700 leading-relaxed mb-8">{post.excerpt}</p>
-        {post.tags && post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-7">
-            {post.tags.map((tag) => (
-              <span
-                key={`${post.slug}-${tag}`}
-                className="inline-flex rounded-md bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-700"
-              >
-                #{tag}
-              </span>
-            ))}
-          </div>
+
+        {post.html ? (
+          <div className="blog-rich" dangerouslySetInnerHTML={{ __html: post.html }} />
+        ) : (
+          <>
+            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-5 leading-tight">{post.title}</h1>
+            <p className="text-zinc-700 leading-relaxed mb-8">{post.excerpt}</p>
+            {post.tags && post.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-7">
+                {post.tags.map((tag) => (
+                  <span
+                    key={`${post.slug}-${tag}`}
+                    className="inline-flex rounded-md bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-700"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {tableOfContents.length > 0 && (
+              <section className="mb-8 rounded-xl border border-zinc-200 bg-zinc-50 p-5">
+                <h2 className="text-base font-semibold text-zinc-900 mb-3">목차</h2>
+                <ul className="space-y-2">
+                  {tableOfContents.map((item) => (
+                    <li key={item.id} className={item.type === "h3" ? "ml-4" : ""}>
+                      <a href={`#${item.id}`} className="text-sm text-[#1e40af] hover:underline">
+                        {item.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            <div className="text-zinc-800 leading-8">
+              {contentBlocks.map((block) => {
+                if (block.type === "h2") {
+                  return (
+                    <h2 key={block.id} id={block.id} className="text-xl font-bold text-zinc-900 mt-8 mb-3 scroll-mt-24">
+                      {block.text}
+                    </h2>
+                  );
+                }
+
+                if (block.type === "h3") {
+                  return (
+                    <h3 key={block.id} id={block.id} className="text-lg font-semibold text-zinc-900 mt-6 mb-2 scroll-mt-24">
+                      {block.text}
+                    </h3>
+                  );
+                }
+
+                return (
+                  <p key={`${post.slug}-${block.text}`} className="mb-5">
+                    {block.text}
+                  </p>
+                );
+              })}
+            </div>
+          </>
         )}
-
-        {tableOfContents.length > 0 && (
-          <section className="mb-8 rounded-xl border border-zinc-200 bg-zinc-50 p-5">
-            <h2 className="text-base font-semibold text-zinc-900 mb-3">목차</h2>
-            <ul className="space-y-2">
-              {tableOfContents.map((item) => (
-                <li key={item.id} className={item.type === "h3" ? "ml-4" : ""}>
-                  <a href={`#${item.id}`} className="text-sm text-[#1e40af] hover:underline">
-                    {item.text}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        <div className="text-zinc-800 leading-8">
-          {contentBlocks.map((block) => {
-            if (block.type === "h2") {
-              return (
-                <h2 key={block.id} id={block.id} className="text-xl font-bold text-zinc-900 mt-8 mb-3 scroll-mt-24">
-                  {block.text}
-                </h2>
-              );
-            }
-
-            if (block.type === "h3") {
-              return (
-                <h3 key={block.id} id={block.id} className="text-lg font-semibold text-zinc-900 mt-6 mb-2 scroll-mt-24">
-                  {block.text}
-                </h3>
-              );
-            }
-
-            return (
-              <p key={`${post.slug}-${block.text}`} className="mb-5">
-                {block.text}
-              </p>
-            );
-          })}
-        </div>
 
         <section className="mt-10 rounded-xl border border-zinc-200 bg-zinc-50 p-5">
           <h2 className="text-base font-semibold text-zinc-900 mb-2">관련 학습으로 이어가기</h2>
