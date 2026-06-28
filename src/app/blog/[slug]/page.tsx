@@ -102,12 +102,12 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
     author: {
       "@type": "Person",
       name: author.name,
-      jobTitle: author.title,
+      jobTitle: author.role,
       description: author.bio,
       url: author.profileUrl,
       worksFor: {
         "@type": "Organization",
-        name: author.affiliation,
+        name: author.lawFirm,
       },
     },
     publisher: {
@@ -238,7 +238,7 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
             <div className="min-w-0">
               <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                 <p className="text-base font-semibold text-zinc-900">{author.name}</p>
-                <p className="text-sm text-zinc-500">{author.title} · {author.affiliation}</p>
+                <p className="text-sm text-zinc-500">{author.role}</p>
               </div>
               <p className="mt-0.5 text-xs font-medium text-[#1e40af]">{author.summary}</p>
               <p className="mt-2 text-sm leading-relaxed text-zinc-700">{author.bio}</p>

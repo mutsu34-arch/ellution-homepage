@@ -62,7 +62,7 @@ export default function AboutPage() {
         </section>
 
         <section className="mb-6 rounded-2xl border border-zinc-200 bg-white p-7 sm:p-9">
-          <h2 className="mb-4 text-xl font-bold text-zinc-900">대표 변호사 소개</h2>
+          <h2 className="mb-4 text-xl font-bold text-zinc-900">대표자 소개</h2>
           <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
             <div className="inline-flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-blue-100 text-2xl font-bold text-[#1e40af]">
               {author.name.charAt(0)}
@@ -70,9 +70,7 @@ export default function AboutPage() {
             <div className="min-w-0">
               <div className="flex flex-wrap items-baseline gap-x-2">
                 <p className="text-lg font-bold text-zinc-900">{author.name}</p>
-                <p className="text-sm text-zinc-500">
-                  {author.title} · {author.affiliation}
-                </p>
+                <p className="text-sm text-zinc-500">{author.role}</p>
               </div>
               <p className="mt-1 text-sm font-medium text-[#1e40af]">{author.summary}</p>
               <p className="mt-3 leading-relaxed text-zinc-700">{author.bio}</p>
