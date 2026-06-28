@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
+import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ellution.co.kr"),
@@ -76,7 +77,10 @@ export default function RootLayout({
             crossOrigin="anonymous"
           />
         )}
-        <Providers>{children}</Providers>
+        <Providers>
+          <SiteHeader />
+          {children}
+        </Providers>
       </body>
     </html>
   );
