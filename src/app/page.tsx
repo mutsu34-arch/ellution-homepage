@@ -26,6 +26,9 @@ export default function HomePage() {
             <Link href="/blog" className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100">
               칼럼
             </Link>
+            <Link href="/about" className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100">
+              회사소개
+            </Link>
             <Link href="/login" className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100">
               로그인
             </Link>
@@ -185,6 +188,9 @@ export default function HomePage() {
               <p className="mt-1">연락처: ellutionsoft@gmail.com</p>
             </div>
             <nav className="flex flex-wrap gap-4 text-sm text-zinc-600">
+              <Link href="/about" className="hover:text-zinc-900">
+                회사소개
+              </Link>
               <Link href="/privacy" className="hover:text-zinc-900">
                 개인정보처리방침
               </Link>
