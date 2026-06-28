@@ -200,12 +200,9 @@ export default function HomePage() {
               <Link href="/contact" className="hover:text-zinc-900">
                 문의하기
               </Link>
-              <Link href="/adsense-checklist" className="hover:text-zinc-900">
-                애드센스 체크리스트
-              </Link>
             </nav>
           </div>
-          <p className="mt-6 text-sm text-zinc-500">Copyright © 2024 Elution. All rights reserved.</p>
+          <p className="mt-6 text-sm text-zinc-500">Copyright © 2026 Elution. All rights reserved.</p>
         </div>
       </footer>
     </div>
