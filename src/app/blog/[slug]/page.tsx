@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
 import { notFound } from "next/navigation";
-import { blogPosts, getPostBySlug } from "@/lib/blog";
+import { getPublishedPosts, getPublishedPostBySlug } from "@/lib/blog";
 import { author } from "@/lib/author";
+
+export const revalidate = 3600;
 
 type BlogDetailPageProps = {
   params: {
@@ -12,7 +14,7 @@ type BlogDetailPageProps = {
 };
 
 export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
-  const post = getPostBySlug(params.slug);
+  const post = getPublishedPostBySlug(params.slug);
 
   if (!post) {
     return {
@@ -40,7 +42,7 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
 }
 
 export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
+  return getPublishedPosts().map((post) => ({ slug: post.slug }));
 }
 
 type ContentBlock = {
@@ -79,7 +81,7 @@ function buildContentBlocks(lines: string[]): ContentBlock[] {
 }
 
 export default function BlogDetailPage({ params }: BlogDetailPageProps) {
-  const post = getPostBySlug(params.slug);
+  const post = getPublishedPostBySlug(params.slug);
 
   if (!post) {
     notFound();
@@ -87,7 +89,7 @@ export default function BlogDetailPage({ params }: BlogDetailPageProps) {
 
   const contentBlocks = buildContentBlocks(post.content);
   const tableOfContents = contentBlocks.filter((block) => block.type === "h2" || block.type === "h3");
-  const relatedPosts = blogPosts
+  const relatedPosts = getPublishedPosts()
     .filter((item) => item.slug !== post.slug)
     .filter((item) => item.tags?.some((tag) => post.tags?.includes(tag)))
     .slice(0, 3);

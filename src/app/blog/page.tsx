@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { blogPosts } from "@/lib/blog";
+import { getPublishedPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
   title: "전문가 칼럼 | 엘루션",
@@ -8,7 +8,11 @@ export const metadata: Metadata = {
     "행정법 수험 전략, 법률/부동산 실무 인사이트를 담은 엘루션 전문가 칼럼 아카이브입니다.",
 };
 
+export const revalidate = 3600;
+
 export default function BlogPage() {
+  const blogPosts = getPublishedPosts();
+
   return (
     <main className="min-h-screen bg-[#F9FAFB] px-4 py-16">
       <div className="max-w-5xl mx-auto">

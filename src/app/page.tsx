@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { blogPosts } from "@/lib/blog";
+import { getPublishedPosts } from "@/lib/blog";
+
+export const revalidate = 3600;
 
 export default function HomePage() {
-  const latestPosts = blogPosts.slice(0, 3);
+  const latestPosts = getPublishedPosts().slice(0, 3);
 
   return (
     <div className="min-h-screen bg-[#f8fafc] text-zinc-900">
