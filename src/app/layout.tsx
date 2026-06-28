@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://ellution.co.kr",
   },
+  other: {
+    "google-adsense-account": "ca-pub-9923328279121589",
+  },
 };
 
 export default function RootLayout({
