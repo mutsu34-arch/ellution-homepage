@@ -2,31 +2,31 @@ import fs from "fs";
 
 const posts = [
   {
-    file: "c:/Users/mutsu/Downloads/gemini-code-1782628765413.html",
-    slug: "approval-basic-act-supplementary-act-15",
+    file: "c:/Users/mutsu/Downloads/gemini-code-1782629586447.html",
+    slug: "administrative-vicarious-execution-18",
     title:
-      "[행정법 판례분석 15] 인가의 기본행위와 보충행위, 그리고 쟁송방법 (기본행위 하자론)",
-    date: "2026-07-13",
+      "[행정법 판례분석 18] 무허가 증축 철거 대집행 계고처분 사건 (행정대집행의 요건)",
+    date: "2026-07-16",
     excerpt:
-      "인가의 보충성, 기본행위 하자 치유 불가, 기본행위 하자만 있을 때 인가처분 취소소송의 각하 등 인가 쟁송의 번지수를 정리합니다.",
+      "대집행의 4대 요건(공·대·보·심), 단순 의무불이행만으로는 불가한 '심히 공익을 해할 것' 요건, 대집행의 재량행위성 등 행정대집행 법리를 분석합니다.",
   },
   {
-    file: "c:/Users/mutsu/Downloads/gemini-code-1782629213384.html",
-    slug: "attached-condition-independent-dispute-16",
+    file: "c:/Users/mutsu/Downloads/gemini-code-1782629601777.html",
+    slug: "enforcement-fine-nature-19",
     title:
-      "[행정법 판례분석 16] 부관의 독립쟁송가능성과 독립취소가능성 사건",
-    date: "2026-07-14",
+      "[행정법 판례분석 19] 시정명령 이행과 이행강제금 부과 사건 (이행강제금의 본질)",
+    date: "2026-07-17",
     excerpt:
-      "부담 부관의 진정일부취소소송 허용, 기한·조건 등 기타 부관의 독립쟁송 불가, 부진정일부취소소송 배척 등 부관 쟁송 법리를 분석합니다.",
+      "이행강제금의 간접강제 본질, 부과 전 이행 시 기한 도과 불문 부과 불가, 부과 후 이행 시 기징수, 이중처벌금지원칙 등 이행강제금 법리를 정리합니다.",
   },
   {
-    file: "c:/Users/mutsu/Downloads/gemini-code-1782629196585.html",
-    slug: "unconstitutional-tax-enforcement-17",
+    file: "c:/Users/mutsu/Downloads/gemini-code-1782629651996.html",
+    slug: "administrative-fine-objection-20",
     title:
-      "[행정법 판례분석 17] 위헌결정 이후의 체납처분 당연무효 사건 (위헌법률에 근거한 처분)",
-    date: "2026-07-15",
+      "[행정법 판례분석 20] 질서위반행위규제법상 과태료 부과와 이의제기 사건 (과태료의 핵심 쟁점)",
+    date: "2026-07-18",
     excerpt:
-      "위헌결정 이전 처분의 취소사유, 위헌결정 이후 새로운 체납처분·집행의 당연무효, 위헌결정의 기속력 등 위헌법률에 근거한 처분의 효력을 정리합니다.",
+      "과태료의 고의·과실 요건, 위법성 착오, 60일 이의제기와 처분의 효력 상실 및 법원 과태료 재판 이행 등 질서위반행위규제법의 핵심 쟁점을 분석합니다.",
   },
 ];
 
@@ -61,7 +61,7 @@ const tsPath = "src/lib/blog-precedent-series.ts";
 let ts = fs.readFileSync(tsPath, "utf8");
 const marker = "export const precedentSeriesPosts: BlogPost[] = [";
 
-if (ts.includes("approval-basic-act-supplementary-act-15")) {
+if (ts.includes("administrative-vicarious-execution-18")) {
   console.log("Already added");
   process.exit(0);
 }
