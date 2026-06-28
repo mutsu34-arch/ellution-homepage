@@ -99,6 +99,8 @@ export default function ContactPage() {
           <dl className="grid grid-cols-1 gap-x-6 gap-y-3 text-sm sm:grid-cols-[140px_1fr]">
             <dt className="font-medium text-zinc-500">상호</dt>
             <dd className="text-zinc-800">엘루션</dd>
+            <dt className="font-medium text-zinc-500">대표자</dt>
+            <dd className="text-zinc-800">정대영</dd>
             <dt className="font-medium text-zinc-500">사업자등록번호</dt>
             <dd className="text-zinc-800">588-07-03369</dd>
             <dt className="font-medium text-zinc-500">통신판매업신고</dt>
