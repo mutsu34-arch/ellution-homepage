@@ -31,14 +31,8 @@ export default function HomePage() {
             <Link href="/about" className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100">
               회사소개
             </Link>
-            <Link href="/login" className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100">
+            <Link href="/login" className="rounded-lg bg-[#1e40af] px-3.5 py-2 text-sm font-semibold text-white hover:bg-[#1e3a8a]">
               로그인
-            </Link>
-            <Link
-              href="/register"
-              className="rounded-lg bg-[#1e40af] px-3.5 py-2 text-sm font-semibold text-white hover:bg-[#1e3a8a]"
-            >
-              회원가입
             </Link>
           </nav>
         </div>
