@@ -179,29 +179,48 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 4px;
 }
 
-/* 리치 HTML 본문: 불릿 목록 → 파란색 볼드 문단 스타일 */
-.blog-rich ul:not(.info-list) {
-  list-style: none;
-  padding-left: 0;
+/* 리치 HTML: 불릿 대신 파란색 볼드 강조 문단 */
+.blog-rich .blog-emphasis-lines {
   margin: 0.75em 0;
+  padding: 0;
 }
-.blog-rich ul:not(.info-list) > li {
-  margin-bottom: 0.6em;
+.blog-rich .blog-emphasis-line {
+  margin: 0 0 0.6em;
   font-weight: 700;
-  color: #1e40af !important;
+  color: #1e40af;
   line-height: 1.65;
 }
-.blog-rich .nested-list li,
-.blog-rich .summary-list li {
+.blog-rich .blog-emphasis-line:last-child {
+  margin-bottom: 0;
+}
+
+/* (구 HTML 목록 fallback — 변환 전 캐시 등 대비) */
+.blog-rich ul,
+.blog-rich ol {
+  list-style: none !important;
+  list-style-type: none !important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+.blog-rich li::marker {
+  content: none !important;
+}
+.blog-rich ul:not(.info-list) > li,
+.blog-rich .nested-list > li,
+.blog-rich .summary-list > li {
+  display: block !important;
+  list-style: none !important;
+  font-weight: 700 !important;
   color: #1e40af !important;
+  padding-left: 0 !important;
 }
 .blog-rich .info-list > li {
-  color: inherit;
-  font-weight: normal;
+  font-weight: normal !important;
+  color: inherit !important;
 }
 .blog-rich .info-list .sub-content {
-  font-weight: normal;
-  color: #4b5563;
+  font-weight: normal !important;
+  color: #4b5563 !important;
 }
 .blog-rich .tag {
   display: inline-block;

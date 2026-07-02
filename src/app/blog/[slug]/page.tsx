@@ -4,6 +4,7 @@ import Script from "next/script";
 import { notFound } from "next/navigation";
 import { getPublishedPosts } from "@/lib/blog";
 import { getResolvedPublishedPost } from "@/lib/posts-store";
+import { normalizeBlogHtml } from "@/lib/blog-html";
 import { author } from "@/lib/author";
 import { EditPostButton } from "@/components/EditPostButton";
 
@@ -149,7 +150,10 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
         </div>
 
         {post.html ? (
-          <div className="blog-rich" dangerouslySetInnerHTML={{ __html: post.html }} />
+          <div
+            className="blog-rich"
+            dangerouslySetInnerHTML={{ __html: normalizeBlogHtml(post.html) }}
+          />
         ) : (
           <>
             <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-5 leading-tight">{post.title}</h1>
