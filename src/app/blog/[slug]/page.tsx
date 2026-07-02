@@ -202,9 +202,11 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
                 if (block.type === "li") {
                   return (
-                    <p key={`${post.slug}-li-${block.text}`} className="mb-2 flex gap-2 pl-1">
-                      <span aria-hidden="true" className="text-[#1e40af]">•</span>
-                      <span>{block.text}</span>
+                    <p
+                      key={`${post.slug}-li-${block.text}`}
+                      className="mb-3 font-bold text-[#1e40af] leading-relaxed"
+                    >
+                      {block.text}
                     </p>
                   );
                 }
