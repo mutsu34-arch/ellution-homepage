@@ -54,6 +54,25 @@ type ContentBlock = {
   id?: string;
 };
 
+function normalizeMarkdownArtifacts(line: string): string {
+  // 일부 글에서 "***원칙**" 형태로 저장된 케이스를 "**원칙**"로 보정
+  if (/^\*{3}.+\*{2}/.test(line)) {
+    return line.replace(/^\*{3}/, "**");
+  }
+  return line;
+}
+
+function renderInlineMarkdown(text: string): Array<string | JSX.Element> {
+  const normalized = normalizeMarkdownArtifacts(text);
+  const parts = normalized.split(/(\*\*[^*]+\*\*)/g).filter(Boolean);
+  return parts.map((part, idx) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={`strong-${idx}`}>{part.slice(2, -2)}</strong>;
+    }
+    return <span key={`text-${idx}`}>{part}</span>;
+  });
+}
+
 function buildContentBlocks(lines: string[]): ContentBlock[] {
   let headingCount = 0;
 
@@ -76,10 +95,10 @@ function buildContentBlocks(lines: string[]): ContentBlock[] {
       };
     }
 
-    if (line.startsWith("- ")) {
+    if (/^[-*•]\s+/.test(line)) {
       return {
         type: "li",
-        text: line.replace(/^- /, "").trim(),
+        text: line.replace(/^[-*•]\s+/, "").trim(),
       };
     }
 
@@ -191,7 +210,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                 if (block.type === "h2") {
                   return (
                     <h2 key={block.id} id={block.id} className="text-xl font-bold text-zinc-900 mt-8 mb-3 scroll-mt-24">
-                      {block.text}
+                      {renderInlineMarkdown(block.text)}
                     </h2>
                   );
                 }
@@ -199,7 +218,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                 if (block.type === "h3") {
                   return (
                     <h3 key={block.id} id={block.id} className="text-lg font-semibold text-zinc-900 mt-6 mb-2 scroll-mt-24">
-                      {block.text}
+                      {renderInlineMarkdown(block.text)}
                     </h3>
                   );
                 }
@@ -210,14 +229,14 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                       key={`${post.slug}-li-${block.text}`}
                       className="mb-3 font-bold text-[#1e40af] leading-relaxed"
                     >
-                      {block.text}
+                      {renderInlineMarkdown(block.text)}
                     </p>
                   );
                 }
 
                 return (
                   <p key={`${post.slug}-${block.text}`} className="mb-5">
-                    {block.text}
+                    {renderInlineMarkdown(block.text)}
                   </p>
                 );
               })}
