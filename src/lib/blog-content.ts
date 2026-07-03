@@ -7,22 +7,27 @@ export type ContentBlock =
 
 export type HeadingBlock = Extract<ContentBlock, { type: "h2" } | { type: "h3" }>;
 
+function normalizeTableLine(line: string): string {
+  return line.trim().replace(/\uFF5C/g, "|");
+}
+
 function isTableRow(line: string): boolean {
-  const trimmed = line.trim();
-  return trimmed.startsWith("|") && trimmed.endsWith("|") && trimmed.length > 2;
+  const normalized = normalizeTableLine(line);
+  if (!normalized) return false;
+
+  const pipeCount = (normalized.match(/\|/g) ?? []).length;
+  if (pipeCount >= 2) return true;
+
+  return normalized.startsWith("|") && normalized.endsWith("|") && normalized.length > 2;
 }
 
 function parseTableRow(line: string): string[] {
-  return line
-    .trim()
-    .replace(/^\|/, "")
-    .replace(/\|$/, "")
-    .split("|")
-    .map((cell) => cell.trim());
+  const normalized = normalizeTableLine(line).replace(/^\|/, "").replace(/\|$/, "");
+  return normalized.split("|").map((cell) => cell.trim());
 }
 
 function isSeparatorRow(cells: string[]): boolean {
-  return cells.length > 0 && cells.every((cell) => /^:?-{2,}:?$/.test(cell));
+  return cells.length > 0 && cells.every((cell) => /^:?-{1,}:?$/.test(cell));
 }
 
 function parseMarkdownTable(tableLines: string[]): { headers: string[]; rows: string[][] } | null {
@@ -63,18 +68,47 @@ export function parseContentHeading(line: string): { type: "h2" | "h3"; text: st
 }
 
 export function buildContentBlocks(lines: string[]): ContentBlock[] {
+  return buildContentBlocksFromBody(lines.join("\n"));
+}
+
+/** 원문 본문에서 표·제목·문단 블록을 파싱합니다. (표 행 사이 빈 줄 허용) */
+export function buildContentBlocksFromBody(body: string): ContentBlock[] {
+  const rawLines = body.split(/\r?\n/);
   const blocks: ContentBlock[] = [];
   let headingCount = 0;
   let i = 0;
 
-  while (i < lines.length) {
-    const line = lines[i];
+  while (i < rawLines.length) {
+    if (rawLines[i].trim().length === 0) {
+      i += 1;
+      continue;
+    }
 
-    if (isTableRow(line)) {
+    const line = rawLines[i].trim();
+
+    if (isTableRow(rawLines[i])) {
       const tableLines: string[] = [];
-      while (i < lines.length && isTableRow(lines[i])) {
-        tableLines.push(lines[i]);
-        i += 1;
+
+      while (i < rawLines.length) {
+        const current = rawLines[i].trim();
+
+        if (current.length === 0) {
+          let j = i + 1;
+          while (j < rawLines.length && rawLines[j].trim().length === 0) j += 1;
+          if (j < rawLines.length && isTableRow(rawLines[j])) {
+            i = j;
+            continue;
+          }
+          break;
+        }
+
+        if (isTableRow(rawLines[i])) {
+          tableLines.push(normalizeTableLine(rawLines[i]));
+          i += 1;
+          continue;
+        }
+
+        break;
       }
 
       const table = parseMarkdownTable(tableLines);

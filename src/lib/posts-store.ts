@@ -35,6 +35,8 @@ export type ResolvedPost = {
   tags: string[];
   /** 마크다운식 본문 라인(편집본일 때 사용) */
   contentLines: string[];
+  /** 블록 파싱용 원문 본문(표 등 구조 보존) */
+  body: string;
   /** 원본 리치 HTML(아직 편집되지 않은 글) */
   html?: string;
   edited: boolean;
@@ -80,19 +82,27 @@ export async function saveOverride(input: PostOverride): Promise<void> {
 }
 
 function overrideToResolved(o: PostOverride): ResolvedPost {
+  const body = o.body ?? "";
   return {
     slug: o.slug,
     title: o.title,
     date: o.date,
     excerpt: o.excerpt,
     tags: o.tags ?? [],
-    contentLines: markdownToContentLines(o.body ?? ""),
+    contentLines: markdownToContentLines(body),
+    body,
     html: undefined,
     edited: true,
   };
 }
 
 function baseToResolved(p: BlogPost): ResolvedPost {
+  const body =
+    p.content && p.content.length > 0
+      ? contentLinesToMarkdown(p.content)
+      : p.html
+        ? htmlToMarkdown(p.html)
+        : "";
   return {
     slug: p.slug,
     title: p.title,
@@ -100,6 +110,7 @@ function baseToResolved(p: BlogPost): ResolvedPost {
     excerpt: p.excerpt,
     tags: p.tags ?? [],
     contentLines: p.content ?? [],
+    body,
     html: p.html,
     edited: false,
   };

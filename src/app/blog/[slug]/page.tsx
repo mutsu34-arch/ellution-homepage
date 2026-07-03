@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { getPublishedPosts } from "@/lib/blog";
 import { getResolvedPublishedPost } from "@/lib/posts-store";
 import { normalizeBlogHtml } from "@/lib/blog-html";
-import { buildContentBlocks, type HeadingBlock } from "@/lib/blog-content";
+import { buildContentBlocksFromBody, type HeadingBlock } from "@/lib/blog-content";
 import { author } from "@/lib/author";
 import { EditPostButton } from "@/components/EditPostButton";
 
@@ -75,7 +75,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
     notFound();
   }
 
-  const contentBlocks = buildContentBlocks(post.contentLines);
+  const contentBlocks = buildContentBlocksFromBody(post.body);
   const tableOfContents = contentBlocks.filter(
     (block): block is HeadingBlock => block.type === "h2" || block.type === "h3",
   );
