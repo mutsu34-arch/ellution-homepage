@@ -3,9 +3,11 @@ import Script from "next/script";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
+import { SITE_URL } from "@/lib/site-url";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ellution.co.kr"),
+  metadataBase: new URL(SITE_URL),
   title: "엘루션(Ellution) | 법률·교육·IT 솔루션",
   description:
     "변호사가 직접 만드는 행정법 학습 앱 행정법Q 및 법률/부동산 전문 칼럼을 제공하는 엘루션 공식 사이트입니다.",
@@ -13,13 +15,13 @@ export const metadata: Metadata = {
     title: "엘루션(Ellution) | 법률·교육·IT 솔루션",
     description:
       "변호사가 직접 만드는 행정법 학습 앱 행정법Q 및 법률/부동산 전문 칼럼",
-    url: "https://ellution.co.kr",
+    url: SITE_URL,
     siteName: "엘루션",
     locale: "ko_KR",
     type: "website",
   },
   alternates: {
-    canonical: "https://ellution.co.kr",
+    canonical: SITE_URL,
     types: {
       "application/rss+xml": [{ url: "/feed.xml", title: "엘루션 전문가 칼럼 RSS" }],
     },
@@ -41,7 +43,7 @@ export default function RootLayout({
       {
         "@type": "ProfessionalService",
         name: "엘루션",
-        url: "https://ellution.co.kr",
+        url: SITE_URL,
         email: "ellutionsoft@gmail.com",
         areaServed: "KR",
         serviceType: "법률·부동산·교육 전문 콘텐츠 및 IT 서비스",
@@ -49,7 +51,7 @@ export default function RootLayout({
       {
         "@type": "EducationalOrganization",
         name: "엘루션",
-        url: "https://ellution.co.kr",
+        url: SITE_URL,
         sameAs: ["https://adminlawq.ellution.co.kr"],
         description: "변호사가 설계한 행정법 학습 플랫폼과 전문 칼럼을 제공합니다.",
       },
@@ -83,6 +85,7 @@ export default function RootLayout({
         <Providers>
           <SiteHeader />
           {children}
+          <SiteFooter />
         </Providers>
       </body>
     </html>

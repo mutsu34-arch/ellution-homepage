@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { SITE_URL } from "@/lib/site-url";
+
 export const metadata: Metadata = {
   title: "문의하기 | 엘루션",
   description:
     "엘루션 서비스, 콘텐츠 제휴, 광고, 법률·교육 칼럼 관련 문의 안내입니다. 이메일과 운영 채널, 운영 주체 정보를 확인하세요.",
   alternates: {
-    canonical: "https://ellution.co.kr/contact",
+    canonical: `${SITE_URL}/contact`,
   },
 };
 

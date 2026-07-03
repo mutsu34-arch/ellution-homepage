@@ -11,6 +11,7 @@ import { normalizeBlogHtml } from "@/lib/blog-html";
 import { buildContentBlocksFromBody, type HeadingBlock } from "@/lib/blog-content";
 import { replaceLatexInlineSymbols } from "@/lib/markdown";
 import { author } from "@/lib/author";
+import { getSiteUrl } from "@/lib/site-url";
 import { EditPostButton } from "@/components/EditPostButton";
 
 export const revalidate = 3600;
@@ -35,16 +36,19 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
     };
   }
 
+  const siteUrl = getSiteUrl();
+  const postUrl = `${siteUrl}/blog/${post.slug}`;
+
   return {
     title: `${post.title} | 엘루션 칼럼`,
     description: post.excerpt,
     alternates: {
-      canonical: `https://ellution.co.kr/blog/${post.slug}`,
+      canonical: postUrl,
     },
     openGraph: {
       title: `${post.title} | 엘루션 칼럼`,
       description: post.excerpt,
-      url: `https://ellution.co.kr/blog/${post.slug}`,
+      url: postUrl,
       type: "article",
       publishedTime: post.date,
       siteName: "엘루션",
@@ -87,6 +91,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
     notFound();
   }
 
+  const siteUrl = getSiteUrl();
   const contentBlocks = buildContentBlocksFromBody(post.body);
   const tableOfContents = contentBlocks.filter(
     (block): block is HeadingBlock => block.type === "h2" || block.type === "h3",
@@ -120,7 +125,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://ellution.co.kr/blog/${post.slug}`,
+      "@id": `${siteUrl}/blog/${post.slug}`,
     },
     keywords: post.tags?.join(", "),
   };

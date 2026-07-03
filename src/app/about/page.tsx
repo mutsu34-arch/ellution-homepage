@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { author } from "@/lib/author";
 
+import { SITE_URL } from "@/lib/site-url";
+
 export const metadata: Metadata = {
   title: "회사소개 | 엘루션",
   description:
     "엘루션은 변호사가 설계한 행정법 학습 서비스와 법률·교육 전문 칼럼을 제공하는 콘텐츠 플랫폼입니다. 운영 주체, 편집 기준, 제공 서비스를 안내합니다.",
   alternates: {
-    canonical: "https://ellution.co.kr/about",
+    canonical: `${SITE_URL}/about`,
   },
 };
 

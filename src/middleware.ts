@@ -83,7 +83,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|feed.xml|rss.xml).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|feed.xml|rss.xml|ads.txt|google).*)",
     "/api/checkout/:path*",
   ],
 };
