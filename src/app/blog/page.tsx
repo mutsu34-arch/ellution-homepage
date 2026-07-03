@@ -6,6 +6,11 @@ export const metadata: Metadata = {
   title: "전문가 칼럼 | 엘루션",
   description:
     "행정법 수험 전략, 법률/부동산 실무 인사이트를 담은 엘루션 전문가 칼럼 아카이브입니다.",
+  alternates: {
+    types: {
+      "application/rss+xml": [{ url: "/feed.xml", title: "엘루션 전문가 칼럼 RSS" }],
+    },
+  },
 };
 
 export const revalidate = 3600;

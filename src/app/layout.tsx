@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://ellution.co.kr",
+    types: {
+      "application/rss+xml": [{ url: "/feed.xml", title: "엘루션 전문가 칼럼 RSS" }],
+    },
   },
   other: {
     "google-adsense-account": "ca-pub-9923328279121589",
