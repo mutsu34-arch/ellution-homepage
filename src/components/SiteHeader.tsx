@@ -54,7 +54,7 @@ export function SiteHeader() {
           })}
           {isAdmin && (
             <Link
-              href="/blog"
+              href="/blog/manage"
               className="rounded-lg px-2.5 py-2 text-sm font-semibold text-[#1e40af] transition hover:bg-blue-50 sm:px-3"
             >
               칼럼 관리

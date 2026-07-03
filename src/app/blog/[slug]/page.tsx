@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
 import { notFound } from "next/navigation";
-import { getPublishedPosts } from "@/lib/blog";
-import { getResolvedPublishedPost } from "@/lib/posts-store";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { isAdminEmail } from "@/lib/admin";
+import { getPublishedPosts, isPublished, type BlogPost } from "@/lib/blog";
+import { getResolvedPost, getResolvedPublishedPost } from "@/lib/posts-store";
 import { normalizeBlogHtml } from "@/lib/blog-html";
 import { buildContentBlocksFromBody, type HeadingBlock } from "@/lib/blog-content";
 import { author } from "@/lib/author";
@@ -18,7 +21,11 @@ type BlogDetailPageProps = {
 };
 
 export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
-  const post = await getResolvedPublishedPost(params.slug);
+  const session = await getServerSession(authOptions);
+  const isAdmin = isAdminEmail(session?.user?.email);
+  const post = isAdmin
+    ? await getResolvedPost(params.slug)
+    : await getResolvedPublishedPost(params.slug);
 
   if (!post) {
     return {
@@ -69,7 +76,11 @@ function renderInlineMarkdown(text: string): Array<string | JSX.Element> {
 }
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
-  const post = await getResolvedPublishedPost(params.slug);
+  const session = await getServerSession(authOptions);
+  const isAdmin = isAdminEmail(session?.user?.email);
+  const post = isAdmin
+    ? await getResolvedPost(params.slug)
+    : await getResolvedPublishedPost(params.slug);
 
   if (!post) {
     notFound();
@@ -126,7 +137,14 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
       <article className="max-w-3xl mx-auto rounded-2xl border border-zinc-200 bg-white p-7 sm:p-10">
         <div className="mb-3 flex items-center justify-between gap-3">
           <p className="text-sm text-zinc-500">{new Date(post.date).toLocaleDateString("ko-KR")}</p>
-          <EditPostButton slug={post.slug} />
+          <div className="flex items-center gap-2">
+            {isAdmin && !isPublished({ date: post.date } as BlogPost) && (
+              <span className="inline-flex rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-800">
+                예약 발행 (관리자 미리보기)
+              </span>
+            )}
+            <EditPostButton slug={post.slug} />
+          </div>
         </div>
 
         {post.html ? (

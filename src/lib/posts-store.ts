@@ -153,8 +153,8 @@ export type ResolvedListItem = {
   tags: string[];
 };
 
-/** 편집본을 반영한 공개 글 목록(최신순). 목록/사이트맵 등에서 사용합니다. */
-export async function getResolvedPublishedList(): Promise<ResolvedListItem[]> {
+/** 편집본을 반영한 전체 글 목록(공개·예약 포함) */
+async function getResolvedAllListItems(): Promise<ResolvedListItem[]> {
   const overrides = await fetchAllOverrides();
 
   const merged = new Map<string, ResolvedListItem>();
@@ -180,9 +180,21 @@ export async function getResolvedPublishedList(): Promise<ResolvedListItem[]> {
     });
   }
 
-  return Array.from(merged.values())
+  return Array.from(merged.values());
+}
+
+/** 편집본을 반영한 공개 글 목록(최신순). 목록/사이트맵 등에서 사용합니다. */
+export async function getResolvedPublishedList(): Promise<ResolvedListItem[]> {
+  return (await getResolvedAllListItems())
     .filter((item) => isPublished({ date: item.date } as BlogPost))
     .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+}
+
+/** 편집본을 반영한 예약 발행 글 목록(공개일 임박순) */
+export async function getResolvedScheduledList(): Promise<ResolvedListItem[]> {
+  return (await getResolvedAllListItems())
+    .filter((item) => !isPublished({ date: item.date } as BlogPost))
+    .sort((a, b) => (a.date > b.date ? 1 : a.date < b.date ? -1 : 0));
 }
 
 /** 편집 폼 초기값(일반 글 형태). 편집본이 있으면 그 본문을, 없으면 원본을 변환합니다. */
