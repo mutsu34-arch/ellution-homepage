@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getPublishedPosts } from "@/lib/blog";
 import { getResolvedPublishedPost } from "@/lib/posts-store";
 import { normalizeBlogHtml } from "@/lib/blog-html";
+import { buildContentBlocks } from "@/lib/blog-content";
 import { author } from "@/lib/author";
 import { EditPostButton } from "@/components/EditPostButton";
 
@@ -48,12 +49,6 @@ export function generateStaticParams() {
   return getPublishedPosts().map((post) => ({ slug: post.slug }));
 }
 
-type ContentBlock = {
-  type: "h2" | "h3" | "p" | "li";
-  text: string;
-  id?: string;
-};
-
 function normalizeMarkdownArtifacts(line: string): string {
   // 일부 글에서 "***원칙**" 형태로 저장된 케이스를 "**원칙**"로 보정
   if (/^\*{3}.+\*{2}/.test(line)) {
@@ -70,42 +65,6 @@ function renderInlineMarkdown(text: string): Array<string | JSX.Element> {
       return <strong key={`strong-${idx}`}>{part.slice(2, -2)}</strong>;
     }
     return <span key={`text-${idx}`}>{part}</span>;
-  });
-}
-
-function buildContentBlocks(lines: string[]): ContentBlock[] {
-  let headingCount = 0;
-
-  return lines.map((line) => {
-    if (line.startsWith("### ")) {
-      headingCount += 1;
-      return {
-        type: "h3",
-        text: line.replace("### ", "").trim(),
-        id: `section-${headingCount}`,
-      };
-    }
-
-    if (line.startsWith("## ")) {
-      headingCount += 1;
-      return {
-        type: "h2",
-        text: line.replace("## ", "").trim(),
-        id: `section-${headingCount}`,
-      };
-    }
-
-    if (/^[-*•]\s+/.test(line)) {
-      return {
-        type: "li",
-        text: line.replace(/^[-*•]\s+/, "").trim(),
-      };
-    }
-
-    return {
-      type: "p",
-      text: line,
-    };
   });
 }
 
