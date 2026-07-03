@@ -9,6 +9,7 @@ import { getPublishedPosts, isPublished, type BlogPost } from "@/lib/blog";
 import { getResolvedPost, getResolvedPublishedPost } from "@/lib/posts-store";
 import { normalizeBlogHtml } from "@/lib/blog-html";
 import { buildContentBlocksFromBody, type HeadingBlock } from "@/lib/blog-content";
+import { replaceLatexInlineSymbols } from "@/lib/markdown";
 import { author } from "@/lib/author";
 import { EditPostButton } from "@/components/EditPostButton";
 
@@ -65,7 +66,7 @@ function normalizeMarkdownArtifacts(line: string): string {
 }
 
 function renderInlineMarkdown(text: string): Array<string | JSX.Element> {
-  const normalized = normalizeMarkdownArtifacts(text);
+  const normalized = replaceLatexInlineSymbols(normalizeMarkdownArtifacts(text));
   const parts = normalized.split(/(\*\*[^*]+\*\*)/g).filter(Boolean);
   return parts.map((part, idx) => {
     if (part.startsWith("**") && part.endsWith("**")) {

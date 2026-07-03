@@ -81,3 +81,14 @@ export function markdownToContentLines(body: string): string[] {
     .map((line) => line.trim())
     .filter((line) => line.length > 0);
 }
+
+/** LaTeX 인라인 기호($\rightarrow$ 등)를 읽기 쉬운 유니코드로 치환합니다. */
+export function replaceLatexInlineSymbols(text: string): string {
+  return text
+    .replace(/\$\s*\\rightarrow\s*\$/g, "→")
+    .replace(/\$\s*\\leftarrow\s*\$/g, "←")
+    .replace(/\$\s*\\leftrightarrow\s*\$/g, "↔")
+    .replace(/\$\s*\\Rightarrow\s*\$/g, "⇒")
+    .replace(/\$\s*\\Leftarrow\s*\$/g, "⇐")
+    .replace(/\$\s*\\Leftrightarrow\s*\$/g, "⇔");
+}

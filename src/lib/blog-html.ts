@@ -2,6 +2,7 @@
  * 리치 HTML 본문의 불릿 목록을 파란색 볼드 문단으로 변환합니다.
  * (Tailwind CDN preflight·인라인 스타일과 무관하게 동작)
  */
+import { replaceLatexInlineSymbols } from "./markdown";
 function convertListBlock(innerHtml: string): string {
   const items = innerHtml.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, (_m, text) => {
     return `<p class="blog-emphasis-line">${text.trim()}</p>`;
@@ -31,5 +32,5 @@ export function normalizeBlogHtml(html: string): string {
   // ol 목록도 동일 처리
   result = result.replace(/<ol[^>]*>([\s\S]*?)<\/ol>/gi, (_m, inner) => convertListBlock(inner));
 
-  return result;
+  return replaceLatexInlineSymbols(result);
 }
