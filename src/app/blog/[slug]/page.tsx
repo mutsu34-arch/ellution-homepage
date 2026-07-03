@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { isAdminEmail } from "@/lib/admin";
 import { getPublishedPosts, isPublished, type BlogPost } from "@/lib/blog";
-import { getResolvedPost, getResolvedPublishedPost } from "@/lib/posts-store";
+import { getResolvedPost, getResolvedPublishedPost, getResolvedPublishedList, pickRelatedPublishedPosts } from "@/lib/posts-store";
 import { normalizeBlogHtml } from "@/lib/blog-html";
 import { buildContentBlocksFromBody, type HeadingBlock } from "@/lib/blog-content";
 import { replaceLatexInlineSymbols } from "@/lib/markdown";
@@ -96,10 +96,12 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const tableOfContents = contentBlocks.filter(
     (block): block is HeadingBlock => block.type === "h2" || block.type === "h3",
   );
-  const relatedPosts = getPublishedPosts()
-    .filter((item) => item.slug !== post.slug)
-    .filter((item) => item.tags?.some((tag) => post.tags?.includes(tag)))
-    .slice(0, 3);
+  const allPublished = await getResolvedPublishedList();
+  const relatedPosts = pickRelatedPublishedPosts(
+    { slug: post.slug, tags: post.tags },
+    allPublished,
+    5,
+  );
   const blogPostingStructuredData = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -282,7 +284,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
         {relatedPosts.length > 0 && (
           <section className="mt-8">
-            <h2 className="text-base font-semibold text-zinc-900 mb-3">관련된 다른 판례 보기</h2>
+            <h2 className="text-base font-semibold text-zinc-900 mb-3">관련된 다른 글 보기</h2>
             <div className="grid grid-cols-1 gap-3">
               {relatedPosts.map((item) => (
                 <Link

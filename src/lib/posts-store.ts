@@ -190,6 +190,47 @@ export async function getResolvedPublishedList(): Promise<ResolvedListItem[]> {
     .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 }
 
+/** 태그 유사도 우선, 부족하면 최신 글로 채워 관련 글을 고릅니다. */
+export function pickRelatedPublishedPosts(
+  current: { slug: string; tags?: string[] },
+  candidates: ResolvedListItem[],
+  max = 5,
+): ResolvedListItem[] {
+  const currentTags = new Set(current.tags ?? []);
+  const others = candidates.filter((item) => item.slug !== current.slug);
+
+  const ranked = others
+    .map((item) => ({
+      item,
+      overlap: (item.tags ?? []).filter((tag) => currentTags.has(tag)).length,
+    }))
+    .sort((a, b) => {
+      if (b.overlap !== a.overlap) return b.overlap - a.overlap;
+      return a.item.date < b.item.date ? 1 : a.item.date > b.item.date ? -1 : 0;
+    });
+
+  const related: ResolvedListItem[] = [];
+  const seen = new Set<string>();
+
+  for (const { item, overlap } of ranked) {
+    if (related.length >= max) break;
+    if (overlap > 0) {
+      related.push(item);
+      seen.add(item.slug);
+    }
+  }
+
+  for (const { item } of ranked) {
+    if (related.length >= max) break;
+    if (!seen.has(item.slug)) {
+      related.push(item);
+      seen.add(item.slug);
+    }
+  }
+
+  return related.slice(0, max);
+}
+
 /** 편집본을 반영한 예약 발행 글 목록(공개일 임박순) */
 export async function getResolvedScheduledList(): Promise<ResolvedListItem[]> {
   return (await getResolvedAllListItems())
