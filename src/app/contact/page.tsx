@@ -30,7 +30,7 @@ const inquiryTypes = [
 
 const channels = [
   { name: "행정법Q", href: "https://adminlawq.ellution.co.kr/" },
-  { name: "학습 칼럼 블로그", href: "https://edu.ellution.co.kr/" },
+  { name: "전문가 칼럼", href: "/blog" },
   { name: "법률 칼럼 블로그", href: "https://law.ellution.co.kr/" },
   { name: "법률사무소 엘루션", href: "https://www.lawfirm.ellution.co.kr/" },
 ];
@@ -103,18 +103,22 @@ export default function ContactPage() {
         <section className="mb-6 rounded-2xl border border-zinc-200 bg-white p-7 sm:p-9">
           <h2 className="mb-4 text-xl font-bold text-zinc-900">운영 채널</h2>
           <div className="flex flex-wrap gap-2">
-            {channels.map((channel) => (
+            {channels.map((channel) => {
+              const isExternal = channel.href.startsWith("http");
+              return (
               <Link
                 key={channel.name}
                 href={channel.href}
-                target="_blank"
-                rel="noopener noreferrer"
+                {...(isExternal
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
                 className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:border-[#1e40af] hover:text-[#1e40af]"
               >
                 {channel.name}
                 <span aria-hidden="true">→</span>
               </Link>
-            ))}
+              );
+            })}
           </div>
         </section>
 

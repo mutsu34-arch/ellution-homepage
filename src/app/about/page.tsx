@@ -20,9 +20,9 @@ const services = [
     href: "https://adminlawq.ellution.co.kr/",
   },
   {
-    name: "학습 칼럼 블로그",
-    desc: "공무원 수험생을 위한 행정법 핵심 요약·기출·공부법을 다루는 학습 콘텐츠 채널입니다.",
-    href: "https://edu.ellution.co.kr/",
+    name: "전문가 칼럼",
+    desc: "행정법 판례 분석·수험 전략을 다루는 엘루션 공식 칼럼입니다.",
+    href: "/blog",
   },
   {
     name: "법률 칼럼 블로그",
@@ -130,12 +130,15 @@ export default function AboutPage() {
         <section className="mb-6 rounded-2xl border border-zinc-200 bg-white p-7 sm:p-9">
           <h2 className="mb-4 text-xl font-bold text-zinc-900">제공 서비스</h2>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {services.map((service) => (
+            {services.map((service) => {
+              const isExternal = service.href.startsWith("http");
+              return (
               <Link
                 key={service.name}
                 href={service.href}
-                target="_blank"
-                rel="noopener noreferrer"
+                {...(isExternal
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
                 className="group rounded-xl border border-zinc-200 bg-zinc-50 p-5 transition hover:border-[#1e40af] hover:bg-blue-50/60"
               >
                 <p className="flex items-center gap-1.5 text-base font-semibold text-zinc-900 group-hover:text-[#1e40af]">
@@ -144,7 +147,8 @@ export default function AboutPage() {
                 </p>
                 <p className="mt-2 text-sm leading-relaxed text-zinc-600">{service.desc}</p>
               </Link>
-            ))}
+              );
+            })}
           </div>
         </section>
 

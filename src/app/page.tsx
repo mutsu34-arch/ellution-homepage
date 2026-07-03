@@ -118,24 +118,16 @@ export default function HomePage() {
               <p className="text-sm font-semibold text-[#1e40af]">Latest Insights</p>
               <h2 className="text-2xl font-bold sm:text-3xl">전문가 칼럼</h2>
               <p className="mt-1 text-sm text-zinc-500">
-                행정법 학습 칼럼은 <span className="font-medium text-zinc-700">학습 칼럼 블로그</span>에서 더 깊이 있게 만나보세요.
+                행정법 판례 분석·수험 전략 칼럼을 정기적으로 발행합니다.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <Link
-                href="https://edu.ellution.co.kr/"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/blog"
                 className="inline-flex items-center gap-1.5 rounded-lg bg-[#1e40af] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1e3a8a]"
               >
-                학습 칼럼 블로그
-                <span aria-hidden="true">→</span>
-              </Link>
-              <Link
-                href="/blog"
-                className="rounded-lg border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
-              >
                 전체 글 보기
+                <span aria-hidden="true">→</span>
               </Link>
             </div>
           </div>
