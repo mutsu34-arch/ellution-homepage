@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { getPublishedPosts } from "@/lib/blog";
 import { getResolvedPublishedPost } from "@/lib/posts-store";
 import { normalizeBlogHtml } from "@/lib/blog-html";
-import { buildContentBlocks } from "@/lib/blog-content";
+import { buildContentBlocks, type HeadingBlock } from "@/lib/blog-content";
 import { author } from "@/lib/author";
 import { EditPostButton } from "@/components/EditPostButton";
 
@@ -76,7 +76,9 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   }
 
   const contentBlocks = buildContentBlocks(post.contentLines);
-  const tableOfContents = contentBlocks.filter((block) => block.type === "h2" || block.type === "h3");
+  const tableOfContents = contentBlocks.filter(
+    (block): block is HeadingBlock => block.type === "h2" || block.type === "h3",
+  );
   const relatedPosts = getPublishedPosts()
     .filter((item) => item.slug !== post.slug)
     .filter((item) => item.tags?.some((tag) => post.tags?.includes(tag)))
@@ -190,6 +192,34 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                     >
                       {renderInlineMarkdown(block.text)}
                     </p>
+                  );
+                }
+
+                if (block.type === "table") {
+                  return (
+                    <div
+                      key={`${post.slug}-table-${block.headers.join("-")}-${block.rows.length}`}
+                      className="blog-table-wrap my-6"
+                    >
+                      <table className="blog-table">
+                        <thead>
+                          <tr>
+                            {block.headers.map((header) => (
+                              <th key={header}>{renderInlineMarkdown(header)}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {block.rows.map((row, rowIndex) => (
+                            <tr key={`row-${rowIndex}`}>
+                              {row.map((cell, cellIndex) => (
+                                <td key={`cell-${rowIndex}-${cellIndex}`}>{renderInlineMarkdown(cell)}</td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   );
                 }
 

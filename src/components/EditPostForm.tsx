@@ -93,8 +93,15 @@ export function EditPostForm({ initial }: { initial: InitialDraft }) {
         <p className="mb-2 text-xs leading-relaxed text-zinc-500">
           줄 맨 앞에 <code className="rounded bg-zinc-100 px-1">## </code>를 쓰면 소제목,{" "}
           <code className="rounded bg-zinc-100 px-1">### </code>는 작은 소제목,{" "}
-          <code className="rounded bg-zinc-100 px-1">- </code>는 목록이 됩니다. 그 외에는 그냥 문단으로 표시됩니다.
+          <code className="rounded bg-zinc-100 px-1">- </code>는 목록이 됩니다. 표는 아래처럼{" "}
+          <code className="rounded bg-zinc-100 px-1">|</code>로 구분해 작성하세요.
         </p>
+        <pre className="mb-2 overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-xs leading-relaxed text-zinc-600">
+{`| 구분 | 직권취소 | 철회 |
+|------|----------|------|
+| 효과 | 소급 소멸 | 장래 소멸 |
+| 권자 | 행정청 | 행정청 |`}
+        </pre>
         <textarea
           value={body}
           onChange={(e) => setBody(e.target.value)}
