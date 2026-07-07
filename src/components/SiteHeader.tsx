@@ -53,12 +53,20 @@ export function SiteHeader() {
             );
           })}
           {isAdmin && (
-            <Link
-              href="/blog/manage"
-              className="rounded-lg px-2.5 py-2 text-sm font-semibold text-[#1e40af] transition hover:bg-blue-50 sm:px-3"
-            >
-              칼럼 관리
-            </Link>
+            <>
+              <Link
+                href="/blog/manage/analytics"
+                className="rounded-lg px-2.5 py-2 text-sm font-semibold text-zinc-600 transition hover:bg-zinc-100 sm:px-3"
+              >
+                통계
+              </Link>
+              <Link
+                href="/blog/manage"
+                className="rounded-lg px-2.5 py-2 text-sm font-semibold text-[#1e40af] transition hover:bg-blue-50 sm:px-3"
+              >
+                칼럼 관리
+              </Link>
+            </>
           )}
           {session?.user ? (
             <button
