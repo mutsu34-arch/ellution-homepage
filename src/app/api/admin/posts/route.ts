@@ -4,12 +4,16 @@ import { getServerSession } from "next-auth";
 import { z } from "zod";
 import { authOptions } from "@/lib/auth";
 import { isAdminEmail } from "@/lib/admin";
-import { saveOverride } from "@/lib/posts-store";
+import { getPostBySlug } from "@/lib/blog";
+import { isSlugTaken, saveOverride } from "@/lib/posts-store";
 
 export const dynamic = "force-dynamic";
 
+const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
 const bodySchema = z.object({
-  slug: z.string().min(1).max(200),
+  mode: z.enum(["create", "edit"]).default("edit"),
+  slug: z.string().min(1).max(200).regex(slugPattern, "slug는 영문 소문자, 숫자, 하이픈(-)만 사용할 수 있습니다."),
   title: z.string().min(1).max(300),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD 형식이어야 합니다."),
   excerpt: z.string().max(1000),
@@ -38,8 +42,21 @@ export async function POST(req: Request) {
     );
   }
 
+  const { mode, slug, ...rest } = parsed.data;
+
+  if (mode === "create") {
+    if (await isSlugTaken(slug)) {
+      return NextResponse.json(
+        { error: "이미 사용 중인 slug입니다. 다른 식별자를 입력해 주세요." },
+        { status: 409 },
+      );
+    }
+  } else if (!getPostBySlug(slug) && !(await isSlugTaken(slug))) {
+    return NextResponse.json({ error: "존재하지 않는 글입니다." }, { status: 404 });
+  }
+
   try {
-    await saveOverride(parsed.data);
+    await saveOverride({ slug, ...rest });
   } catch (e) {
     if (e instanceof Error && e.message === "FIREBASE_NOT_CONFIGURED") {
       return NextResponse.json(
@@ -54,9 +71,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "저장 중 오류가 발생했습니다." }, { status: 500 });
   }
 
-  // 변경된 글을 즉시 반영
-  revalidatePath(`/blog/${parsed.data.slug}`);
+  revalidatePath(`/blog/${slug}`);
   revalidatePath("/blog");
+  revalidatePath("/blog/manage");
   revalidatePath("/");
 
   return NextResponse.json({ ok: true });

@@ -47,7 +47,15 @@ export default async function BlogManagePage() {
       <div className="mx-auto max-w-5xl">
         <header className="mb-10">
           <p className="mb-2 text-sm font-semibold text-[#1e40af]">Admin</p>
-          <h1 className="mb-3 text-3xl font-bold text-zinc-900">칼럼 관리</h1>
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+            <h1 className="text-3xl font-bold text-zinc-900">칼럼 관리</h1>
+            <Link
+              href="/blog/manage/new"
+              className="inline-flex rounded-lg bg-[#1e40af] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1e3a8a]"
+            >
+              + 새 글 작성
+            </Link>
+          </div>
           <p className="max-w-3xl leading-relaxed text-zinc-600">
             예약 발행 대기 중인 글을 확인하고 편집할 수 있습니다. 공개일(KST)이 도래하면 자동으로 칼럼
             목록에 노출됩니다.

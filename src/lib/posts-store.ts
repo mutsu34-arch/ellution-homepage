@@ -71,6 +71,13 @@ export async function fetchAllOverrides(): Promise<Record<string, PostOverride>>
   }
 }
 
+/** slug가 코드·편집본 중 어디에든 이미 존재하는지 */
+export async function isSlugTaken(slug: string): Promise<boolean> {
+  if (getPostBySlug(slug)) return true;
+  const override = await fetchOverride(slug);
+  return override !== null;
+}
+
 export async function saveOverride(input: PostOverride): Promise<void> {
   const db = getDb();
   if (!db) throw new Error("FIREBASE_NOT_CONFIGURED");
