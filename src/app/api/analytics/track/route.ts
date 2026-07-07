@@ -14,6 +14,17 @@ const pageviewSchema = z.object({
   title: z.string().max(500),
   articleSlug: z.string().max(200).optional(),
   referrer: z.string().max(2000).optional(),
+  isEntry: z.boolean().optional(),
+  landingSearch: z.string().max(2000).optional(),
+  sourceKey: z.string().max(200).optional(),
+  sourceLabel: z.string().max(200).optional(),
+  medium: z.string().max(100).optional(),
+  searchKeyword: z.string().max(500).optional(),
+  referrerHost: z.string().max(300).optional(),
+  utmSource: z.string().max(200).optional(),
+  utmMedium: z.string().max(200).optional(),
+  utmCampaign: z.string().max(200).optional(),
+  utmTerm: z.string().max(500).optional(),
 });
 
 const durationSchema = z.object({

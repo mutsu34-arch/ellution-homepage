@@ -9,6 +9,7 @@ import {
   getAnalyticsSummary,
   maskVisitorId,
 } from "@/lib/analytics-store";
+import { mediumLabel } from "@/lib/analytics-referrer";
 
 export const dynamic = "force-dynamic";
 
@@ -60,8 +61,8 @@ export default async function AnalyticsManagePage({ searchParams }: AnalyticsPag
             </Link>
           </div>
           <p className="max-w-3xl leading-relaxed text-zinc-600">
-            홈페이지·칼럼 방문 수, 조회 글, 체류 시간을 확인합니다. 관리자·편집 페이지는 집계에서
-            제외됩니다.
+            홈페이지·칼럼 방문 수, 유입 경로(구글·네이버 등), 검색어, 체류 시간을 확인합니다. 관리자·편집
+            페이지는 집계에서 제외됩니다.
           </p>
         </header>
 
@@ -121,6 +122,70 @@ export default async function AnalyticsManagePage({ searchParams }: AnalyticsPag
             </div>
           )}
         </section>
+
+        <div className="mb-10 grid grid-cols-1 gap-8 lg:grid-cols-2">
+          <section className="rounded-2xl border border-zinc-200 bg-white p-6">
+            <h2 className="mb-1 text-xl font-semibold text-zinc-900">유입 경로</h2>
+            <p className="mb-5 text-xs text-zinc-500">세션 첫 방문 기준 · Google·Naver·직접 입력 등</p>
+            {stats.topSources.length === 0 ? (
+              <p className="text-sm text-zinc-500">유입 데이터가 없습니다.</p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="border-b border-zinc-200 text-zinc-500">
+                      <th className="pb-2 pr-3 font-medium">경로</th>
+                      <th className="pb-2 pr-3 font-medium">유형</th>
+                      <th className="pb-2 pr-3 font-medium">유입</th>
+                      <th className="pb-2 font-medium">방문자</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {stats.topSources.map((source) => (
+                      <tr key={source.sourceKey} className="border-b border-zinc-100 last:border-0">
+                        <td className="py-3 pr-3 font-medium text-zinc-900">{source.sourceLabel}</td>
+                        <td className="py-3 pr-3 text-zinc-600">{mediumLabel(source.medium)}</td>
+                        <td className="py-3 pr-3 text-zinc-700">{source.entries}</td>
+                        <td className="py-3 text-zinc-700">{source.uniqueVisitors}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </section>
+
+          <section className="rounded-2xl border border-zinc-200 bg-white p-6">
+            <h2 className="mb-1 text-xl font-semibold text-zinc-900">검색어 / UTM</h2>
+            <p className="mb-5 text-xs text-zinc-500">
+              검색엔진·utm_term에서 수집 · Google은 대부분 검색어 미제공
+            </p>
+            {stats.topKeywords.length === 0 ? (
+              <p className="text-sm text-zinc-500">검색어 데이터가 없습니다.</p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="border-b border-zinc-200 text-zinc-500">
+                      <th className="pb-2 pr-3 font-medium">검색어</th>
+                      <th className="pb-2 pr-3 font-medium">출처</th>
+                      <th className="pb-2 font-medium">유입</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {stats.topKeywords.map((item) => (
+                      <tr key={`${item.sourceLabel}-${item.keyword}`} className="border-b border-zinc-100 last:border-0">
+                        <td className="py-3 pr-3 font-medium text-zinc-900">{item.keyword}</td>
+                        <td className="py-3 pr-3 text-zinc-600">{item.sourceLabel}</td>
+                        <td className="py-3 text-zinc-700">{item.entries}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </section>
+        </div>
 
         <div className="mb-10 grid grid-cols-1 gap-8 lg:grid-cols-2">
           <section className="rounded-2xl border border-zinc-200 bg-white p-6">
@@ -205,6 +270,7 @@ export default async function AnalyticsManagePage({ searchParams }: AnalyticsPag
                   <tr className="border-b border-zinc-200 text-zinc-500">
                     <th className="pb-2 pr-3 font-medium">시각</th>
                     <th className="pb-2 pr-3 font-medium">페이지</th>
+                    <th className="pb-2 pr-3 font-medium">유입</th>
                     <th className="pb-2 pr-3 font-medium">방문자</th>
                     <th className="pb-2 font-medium">체류</th>
                   </tr>
@@ -218,6 +284,12 @@ export default async function AnalyticsManagePage({ searchParams }: AnalyticsPag
                           {view.path}
                         </Link>
                         <p className="mt-0.5 line-clamp-1 text-xs text-zinc-500">{view.title}</p>
+                      </td>
+                      <td className="py-3 pr-3">
+                        <p className="text-zinc-800">{view.sourceLabel ?? "-"}</p>
+                        {view.searchKeyword && (
+                          <p className="mt-0.5 text-xs text-zinc-500">「{view.searchKeyword}」</p>
+                        )}
                       </td>
                       <td className="py-3 pr-3 font-mono text-xs text-zinc-600">
                         {maskVisitorId(view.visitorId)}

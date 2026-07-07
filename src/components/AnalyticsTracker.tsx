@@ -4,8 +4,10 @@ import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { isAdminEmail } from "@/lib/admin";
+import { parseTraffic } from "@/lib/analytics-referrer";
 
 const VISITOR_KEY = "ellution_vid";
+const SESSION_ENTRY_KEY = "ellution_entry_active";
 
 function shouldSkipPath(path: string): boolean {
   if (path.startsWith("/api")) return true;
@@ -38,6 +40,16 @@ function extractArticleSlug(path: string): string | undefined {
   const slug = match[1];
   if (slug === "manage") return undefined;
   return slug;
+}
+
+function isNewSessionEntry(): boolean {
+  try {
+    if (sessionStorage.getItem(SESSION_ENTRY_KEY)) return false;
+    sessionStorage.setItem(SESSION_ENTRY_KEY, "1");
+    return true;
+  } catch {
+    return true;
+  }
 }
 
 async function sendTrack(payload: Record<string, unknown>): Promise<void> {
@@ -94,6 +106,18 @@ export function AnalyticsTracker() {
     viewIdRef.current = viewId;
     startedAtRef.current = Date.now();
 
+    const isEntry = isNewSessionEntry();
+    const landingSearch = isEntry ? window.location.search : undefined;
+    const referrer = isEntry ? document.referrer || undefined : undefined;
+    const traffic =
+      isEntry
+        ? parseTraffic({
+            referrer,
+            landingSearch,
+            siteHosts: [window.location.hostname, "ellution.co.kr", "www.ellution.co.kr"],
+          })
+        : null;
+
     void sendTrack({
       event: "pageview",
       viewId,
@@ -101,7 +125,22 @@ export function AnalyticsTracker() {
       path: pathname,
       title: document.title,
       articleSlug: extractArticleSlug(pathname),
-      referrer: document.referrer || undefined,
+      referrer,
+      isEntry,
+      landingSearch,
+      ...(traffic
+        ? {
+            sourceKey: traffic.sourceKey,
+            sourceLabel: traffic.sourceLabel,
+            medium: traffic.medium,
+            searchKeyword: traffic.searchKeyword,
+            referrerHost: traffic.referrerHost,
+            utmSource: traffic.utmSource,
+            utmMedium: traffic.utmMedium,
+            utmCampaign: traffic.utmCampaign,
+            utmTerm: traffic.utmTerm,
+          }
+        : {}),
     });
 
     const onHide = () => {

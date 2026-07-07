@@ -1,6 +1,10 @@
 import "server-only";
 import { getDb } from "./firebase-admin";
 import { kstPeriodStartIso, toKstDateString } from "./analytics-kst";
+import {
+  pickSessionEntryViews,
+  resolveTrafficFromRecord,
+} from "./analytics-referrer";
 
 const COLLECTION = "analytics_views";
 
@@ -11,6 +15,17 @@ export type AnalyticsViewRecord = {
   title: string;
   articleSlug?: string;
   referrer?: string;
+  isEntry?: boolean;
+  landingSearch?: string;
+  sourceKey?: string;
+  sourceLabel?: string;
+  medium?: string;
+  searchKeyword?: string;
+  referrerHost?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmTerm?: string;
   startedAt: string;
   endedAt?: string;
   durationSec?: number;
@@ -48,6 +63,23 @@ export type AnalyticsRecentView = {
   visitorId: string;
   durationSec?: number;
   startedAt: string;
+  sourceLabel?: string;
+  medium?: string;
+  searchKeyword?: string;
+};
+
+export type AnalyticsSourceStat = {
+  sourceKey: string;
+  sourceLabel: string;
+  medium: string;
+  entries: number;
+  uniqueVisitors: number;
+};
+
+export type AnalyticsKeywordStat = {
+  keyword: string;
+  sourceLabel: string;
+  entries: number;
 };
 
 export type AnalyticsSummary = {
@@ -59,6 +91,8 @@ export type AnalyticsSummary = {
   daily: AnalyticsDailyStat[];
   topPages: AnalyticsPageStat[];
   topArticles: AnalyticsArticleStat[];
+  topSources: AnalyticsSourceStat[];
+  topKeywords: AnalyticsKeywordStat[];
   recentViews: AnalyticsRecentView[];
 };
 
@@ -69,6 +103,17 @@ export async function recordPageView(input: {
   title: string;
   articleSlug?: string;
   referrer?: string;
+  isEntry?: boolean;
+  landingSearch?: string;
+  sourceKey?: string;
+  sourceLabel?: string;
+  medium?: string;
+  searchKeyword?: string;
+  referrerHost?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmTerm?: string;
 }): Promise<void> {
   const db = getDb();
   if (!db) throw new Error("FIREBASE_NOT_CONFIGURED");
@@ -81,6 +126,17 @@ export async function recordPageView(input: {
     title: input.title,
     articleSlug: input.articleSlug,
     referrer: input.referrer,
+    isEntry: input.isEntry,
+    landingSearch: input.landingSearch,
+    sourceKey: input.sourceKey,
+    sourceLabel: input.sourceLabel,
+    medium: input.medium,
+    searchKeyword: input.searchKeyword,
+    referrerHost: input.referrerHost,
+    utmSource: input.utmSource,
+    utmMedium: input.utmMedium,
+    utmCampaign: input.utmCampaign,
+    utmTerm: input.utmTerm,
     startedAt,
     dateKst: toKstDateString(startedAt),
   };
@@ -126,6 +182,8 @@ export async function getAnalyticsSummary(periodDays: number): Promise<Analytics
     daily: [],
     topPages: [],
     topArticles: [],
+    topSources: [],
+    topKeywords: [],
     recentViews: [],
   };
 
@@ -276,13 +334,75 @@ export async function getAnalyticsSummary(periodDays: number): Promise<Analytics
     .sort((a, b) => b.views - a.views)
     .slice(0, 15);
 
-  const recentViews: AnalyticsRecentView[] = records.slice(0, 20).map((row) => ({
-    path: row.path,
-    title: row.title,
-    visitorId: row.visitorId,
-    durationSec: row.durationSec,
-    startedAt: row.startedAt,
-  }));
+  const sessionEntryIds = new Set(pickSessionEntryViews(records).map((row) => row.viewId));
+
+  const recentViews: AnalyticsRecentView[] = records.slice(0, 20).map((row) => {
+    const isSessionEntry = sessionEntryIds.has(row.viewId);
+    const traffic = isSessionEntry ? resolveTrafficFromRecord(row) : null;
+    return {
+      path: row.path,
+      title: row.title,
+      visitorId: row.visitorId,
+      durationSec: row.durationSec,
+      startedAt: row.startedAt,
+      sourceLabel: traffic?.sourceLabel,
+      medium: traffic?.medium,
+      searchKeyword: traffic?.searchKeyword,
+    };
+  });
+
+  const entryViews = pickSessionEntryViews(records);
+  const sourceMap = new Map<
+    string,
+    { sourceKey: string; sourceLabel: string; medium: string; visitors: Set<string>; entries: number }
+  >();
+  const keywordMap = new Map<string, { keyword: string; sourceLabel: string; entries: number }>();
+
+  for (const row of entryViews) {
+    const traffic = resolveTrafficFromRecord(row);
+    const sourceKey = traffic.sourceKey;
+
+    let sourceEntry = sourceMap.get(sourceKey);
+    if (!sourceEntry) {
+      sourceEntry = {
+        sourceKey: traffic.sourceKey,
+        sourceLabel: traffic.sourceLabel,
+        medium: traffic.medium,
+        visitors: new Set<string>(),
+        entries: 0,
+      };
+      sourceMap.set(sourceKey, sourceEntry);
+    }
+    sourceEntry.visitors.add(row.visitorId);
+    sourceEntry.entries += 1;
+
+    const keyword = traffic.searchKeyword?.trim();
+    if (keyword) {
+      const kwKey = `${traffic.sourceLabel}::${keyword.toLowerCase()}`;
+      const kwEntry = keywordMap.get(kwKey) ?? {
+        keyword,
+        sourceLabel: traffic.sourceLabel,
+        entries: 0,
+      };
+      kwEntry.entries += 1;
+      keywordMap.set(kwKey, kwEntry);
+    }
+  }
+
+  const topSources: AnalyticsSourceStat[] = Array.from(sourceMap.values())
+    .map((s) => ({
+      sourceKey: s.sourceKey,
+      sourceLabel: s.sourceLabel,
+      medium: s.medium,
+      entries: s.entries,
+      uniqueVisitors: s.visitors.size,
+    }))
+    .sort((a, b) => b.entries - a.entries)
+    .slice(0, 12);
+
+  const topKeywords: AnalyticsKeywordStat[] = Array.from(keywordMap.values())
+    .sort((a, b) => b.entries - a.entries)
+    .slice(0, 15);
 
   return {
     configured: true,
@@ -293,6 +413,8 @@ export async function getAnalyticsSummary(periodDays: number): Promise<Analytics
     daily,
     topPages,
     topArticles,
+    topSources,
+    topKeywords,
     recentViews,
   };
 }
