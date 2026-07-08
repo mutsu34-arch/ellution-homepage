@@ -91,6 +91,8 @@ export type AnalyticsSummary = {
   daily: AnalyticsDailyStat[];
   topPages: AnalyticsPageStat[];
   topArticles: AnalyticsArticleStat[];
+  /** 조회 기록이 있는 모든 칼럼(상위 제한 없음) */
+  allArticles: AnalyticsArticleStat[];
   topSources: AnalyticsSourceStat[];
   topKeywords: AnalyticsKeywordStat[];
   recentViews: AnalyticsRecentView[];
@@ -182,6 +184,7 @@ export async function getAnalyticsSummary(periodDays: number): Promise<Analytics
     daily: [],
     topPages: [],
     topArticles: [],
+    allArticles: [],
     topSources: [],
     topKeywords: [],
     recentViews: [],
@@ -323,7 +326,7 @@ export async function getAnalyticsSummary(periodDays: number): Promise<Analytics
     .sort((a, b) => b.views - a.views)
     .slice(0, 15);
 
-  const topArticles: AnalyticsArticleStat[] = Array.from(articleMap.values())
+  const allArticles: AnalyticsArticleStat[] = Array.from(articleMap.values())
     .map((a) => ({
       slug: a.slug,
       title: a.title,
@@ -331,8 +334,9 @@ export async function getAnalyticsSummary(periodDays: number): Promise<Analytics
       uniqueVisitors: a.visitors.size,
       avgDurationSec: avgDuration(a.totalDuration, a.durationCount),
     }))
-    .sort((a, b) => b.views - a.views)
-    .slice(0, 15);
+    .sort((a, b) => b.views - a.views);
+
+  const topArticles: AnalyticsArticleStat[] = allArticles.slice(0, 15);
 
   const sessionEntryIds = new Set(pickSessionEntryViews(records).map((row) => row.viewId));
 
@@ -413,6 +417,7 @@ export async function getAnalyticsSummary(periodDays: number): Promise<Analytics
     daily,
     topPages,
     topArticles,
+    allArticles,
     topSources,
     topKeywords,
     recentViews,

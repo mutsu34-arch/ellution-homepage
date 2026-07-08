@@ -10,6 +10,7 @@ import {
   maskVisitorId,
 } from "@/lib/analytics-store";
 import { mediumLabel } from "@/lib/analytics-referrer";
+import { getResolvedPublishedList } from "@/lib/posts-store";
 
 export const dynamic = "force-dynamic";
 
@@ -46,8 +47,30 @@ export default async function AnalyticsManagePage({ searchParams }: AnalyticsPag
   }
 
   const periodDays = parseDays(searchParams.days);
-  const stats = await getAnalyticsSummary(periodDays);
+  const [stats, publishedList] = await Promise.all([
+    getAnalyticsSummary(periodDays),
+    getResolvedPublishedList(),
+  ]);
   const maxDailyViews = Math.max(...stats.daily.map((d) => d.pageViews), 1);
+
+  const articleStatBySlug = new Map(stats.allArticles.map((a) => [a.slug, a]));
+  const perPostStats = publishedList
+    .map((post) => {
+      const stat = articleStatBySlug.get(post.slug);
+      return {
+        slug: post.slug,
+        title: post.title,
+        date: post.date,
+        views: stat?.views ?? 0,
+        uniqueVisitors: stat?.uniqueVisitors ?? 0,
+        avgDurationSec: stat?.avgDurationSec ?? 0,
+      };
+    })
+    .sort((a, b) => {
+      if (b.views !== a.views) return b.views - a.views;
+      return a.date < b.date ? 1 : a.date > b.date ? -1 : 0;
+    });
+  const totalArticleViews = perPostStats.reduce((sum, p) => sum + p.views, 0);
 
   return (
     <main className="min-h-screen bg-[#F9FAFB] px-4 py-16">
@@ -258,6 +281,54 @@ export default async function AnalyticsManagePage({ searchParams }: AnalyticsPag
             )}
           </section>
         </div>
+
+        <section className="mb-10 rounded-2xl border border-zinc-200 bg-white p-6">
+          <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-xl font-semibold text-zinc-900">포스팅별 조회 수</h2>
+            <span className="text-xs text-zinc-500">
+              최근 {periodDays}일 · 전체 {perPostStats.length}편 · 합계 {totalArticleViews.toLocaleString("ko-KR")}회
+            </span>
+          </div>
+          <p className="mb-5 text-xs text-zinc-500">
+            공개된 모든 칼럼의 조회 수(클릭)입니다. 조회가 없는 글은 0으로 표시됩니다.
+          </p>
+          {perPostStats.length === 0 ? (
+            <p className="text-sm text-zinc-500">공개된 칼럼이 없습니다.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-zinc-200 text-zinc-500">
+                    <th className="pb-2 pr-3 font-medium">#</th>
+                    <th className="pb-2 pr-3 font-medium">제목</th>
+                    <th className="pb-2 pr-3 font-medium">조회</th>
+                    <th className="pb-2 pr-3 font-medium">방문자</th>
+                    <th className="pb-2 font-medium">평균 체류</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {perPostStats.map((post, index) => (
+                    <tr key={post.slug} className="border-b border-zinc-100 last:border-0">
+                      <td className="py-3 pr-3 text-zinc-400">{index + 1}</td>
+                      <td className="py-3 pr-3">
+                        <Link
+                          href={`/blog/${post.slug}`}
+                          className="font-medium text-[#1e40af] hover:underline line-clamp-2"
+                        >
+                          {post.title}
+                        </Link>
+                        <p className="mt-0.5 text-xs text-zinc-500">{post.date}</p>
+                      </td>
+                      <td className="py-3 pr-3 font-semibold text-zinc-900">{post.views}</td>
+                      <td className="py-3 pr-3 text-zinc-700">{post.uniqueVisitors}</td>
+                      <td className="py-3 text-zinc-700">{formatDurationSec(post.avgDurationSec)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
 
         <section className="rounded-2xl border border-zinc-200 bg-white p-6">
           <h2 className="mb-5 text-xl font-semibold text-zinc-900">최근 조회</h2>
