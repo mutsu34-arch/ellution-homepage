@@ -9,7 +9,7 @@ import { getPublishedPosts, isPublished, type BlogPost } from "@/lib/blog";
 import { getResolvedPost, getResolvedPublishedPost, getResolvedPublishedList, pickRelatedPublishedPosts } from "@/lib/posts-store";
 import { normalizeBlogHtml } from "@/lib/blog-html";
 import { buildContentBlocksFromBody, type HeadingBlock } from "@/lib/blog-content";
-import { replaceLatexInlineSymbols } from "@/lib/markdown";
+import { renderInlineMarkdown } from "@/lib/blog-inline";
 import { author } from "@/lib/author";
 import { getSiteUrl } from "@/lib/site-url";
 import { EditPostButton } from "@/components/EditPostButton";
@@ -59,25 +59,6 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
 
 export function generateStaticParams() {
   return getPublishedPosts().map((post) => ({ slug: post.slug }));
-}
-
-function normalizeMarkdownArtifacts(line: string): string {
-  // 일부 글에서 "***원칙**" 형태로 저장된 케이스를 "**원칙**"로 보정
-  if (/^\*{3}.+\*{2}/.test(line)) {
-    return line.replace(/^\*{3}/, "**");
-  }
-  return line;
-}
-
-function renderInlineMarkdown(text: string): Array<string | JSX.Element> {
-  const normalized = replaceLatexInlineSymbols(normalizeMarkdownArtifacts(text));
-  const parts = normalized.split(/(\*\*[^*]+\*\*)/g).filter(Boolean);
-  return parts.map((part, idx) => {
-    if (part.startsWith("**") && part.endsWith("**")) {
-      return <strong key={`strong-${idx}`}>{part.slice(2, -2)}</strong>;
-    }
-    return <span key={`text-${idx}`}>{part}</span>;
-  });
 }
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {

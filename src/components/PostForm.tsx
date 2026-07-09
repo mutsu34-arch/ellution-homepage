@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { PostEditorToolbar } from "@/components/PostEditorToolbar";
 
 export type PostFormDraft = {
   slug: string;
@@ -20,6 +21,7 @@ type PostFormProps = {
 
 export function PostForm({ mode, initial }: PostFormProps) {
   const router = useRouter();
+  const bodyRef = useRef<HTMLTextAreaElement>(null);
   const [slug, setSlug] = useState(initial.slug);
   const [title, setTitle] = useState(initial.title);
   const [date, setDate] = useState(initial.date);
@@ -116,11 +118,10 @@ export function PostForm({ mode, initial }: PostFormProps) {
       <div>
         <label className="mb-1 block text-sm font-medium text-zinc-700">본문 (일반 글)</label>
         <p className="mb-2 text-xs leading-relaxed text-zinc-500">
-          줄 맨 앞에 <code className="rounded bg-zinc-100 px-1">## </code>를 쓰면 소제목,{" "}
-          <code className="rounded bg-zinc-100 px-1">### </code>는 작은 소제목,{" "}
-          <code className="rounded bg-zinc-100 px-1">- </code>는 목록이 됩니다. 표는 아래처럼{" "}
+          위 버튼으로 굵게·밑줄·색상·목록·소제목을 넣을 수 있습니다. 표는{" "}
           <code className="rounded bg-zinc-100 px-1">|</code>로 구분해 작성하세요.
         </p>
+        <PostEditorToolbar textareaRef={bodyRef} onChange={setBody} />
         <pre className="mb-2 overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-xs leading-relaxed text-zinc-600">
 {`| 구분 | 직권취소 | 철회 |
 |------|----------|------|
@@ -128,6 +129,7 @@ export function PostForm({ mode, initial }: PostFormProps) {
 | 권자 | 행정청 | 행정청 |`}
         </pre>
         <textarea
+          ref={bodyRef}
           value={body}
           onChange={(e) => setBody(e.target.value)}
           rows={22}
