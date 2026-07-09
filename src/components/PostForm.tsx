@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { PostEditorToolbar } from "@/components/PostEditorToolbar";
+import { generateSlugFromTitle } from "@/lib/post-slug";
 
 export type PostFormDraft = {
   slug: string;
@@ -22,6 +23,7 @@ type PostFormProps = {
 export function PostForm({ mode, initial }: PostFormProps) {
   const router = useRouter();
   const bodyRef = useRef<HTMLTextAreaElement>(null);
+  const [slugTouched, setSlugTouched] = useState(mode === "edit" || Boolean(initial.slug.trim()));
   const [slug, setSlug] = useState(initial.slug);
   const [title, setTitle] = useState(initial.title);
   const [date, setDate] = useState(initial.date);
@@ -69,30 +71,59 @@ export function PostForm({ mode, initial }: PostFormProps) {
   const inputClass =
     "w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-[#1e40af] focus:outline-none focus:ring-1 focus:ring-[#1e40af]";
 
+  function handleTitleChange(value: string) {
+    setTitle(value);
+    if (mode === "create" && !slugTouched) {
+      setSlug(generateSlugFromTitle(value));
+    }
+  }
+
+  function handleSlugChange(value: string) {
+    setSlugTouched(true);
+    setSlug(value);
+  }
+
+  function regenerateSlugFromTitle() {
+    setSlugTouched(false);
+    setSlug(generateSlugFromTitle(title));
+  }
+
   return (
     <form onSubmit={onSave} className="space-y-5">
+      <div>
+        <label className="mb-1 block text-sm font-medium text-zinc-700">제목</label>
+        <input value={title} onChange={(e) => handleTitleChange(e.target.value)} required className={inputClass} />
+      </div>
+
       {mode === "create" && (
         <div>
-          <label className="mb-1 block text-sm font-medium text-zinc-700">URL 식별자 (slug)</label>
+          <div className="mb-1 flex items-center justify-between gap-3">
+            <label className="block text-sm font-medium text-zinc-700">URL 식별자 (slug)</label>
+            {slugTouched && (
+              <button
+                type="button"
+                onClick={regenerateSlugFromTitle}
+                className="text-xs font-medium text-[#1e40af] hover:underline"
+              >
+                제목에서 다시 생성
+              </button>
+            )}
+          </div>
           <input
             value={slug}
-            onChange={(e) => setSlug(e.target.value)}
+            onChange={(e) => handleSlugChange(e.target.value)}
             required
-            placeholder="예: estoppel-doctrine-administrative-act-21"
+            placeholder="제목을 입력하면 자동 생성됩니다"
             pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
             title="영문 소문자, 숫자, 하이픈(-)만 사용할 수 있습니다."
             className={inputClass}
           />
           <p className="mt-1 text-xs text-zinc-500">
-            글 주소: /blog/{slug || "slug"} — 한 번 공개한 뒤에는 바꾸지 않는 것이 좋습니다.
+            글 주소: /blog/{slug || "slug"} — 제목 입력 시 자동 생성되며, 직접 수정할 수도 있습니다. 한 번
+            공개한 뒤에는 바꾸지 않는 것이 좋습니다.
           </p>
         </div>
       )}
-
-      <div>
-        <label className="mb-1 block text-sm font-medium text-zinc-700">제목</label>
-        <input value={title} onChange={(e) => setTitle(e.target.value)} required className={inputClass} />
-      </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
