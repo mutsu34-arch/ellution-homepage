@@ -21,7 +21,7 @@ export default function HomePage() {
             </span>
             <div>
               <p className="text-sm font-semibold tracking-tight">엘루션</p>
-              <p className="text-[11px] text-zinc-500">Legal · Education · IT</p>
+              <p className="text-[11px] text-zinc-500">Legal · Education · Content</p>
             </div>
           </Link>
           <nav className="flex items-center gap-2">
@@ -41,75 +41,56 @@ export default function HomePage() {
       <main className="mx-auto max-w-6xl px-4 pb-16 pt-12 sm:pt-16">
         <section className="mb-10 rounded-3xl border border-white/70 bg-white/80 p-6 shadow-[0_10px_40px_rgba(2,6,23,0.06)] backdrop-blur sm:p-10">
           <p className="mb-3 inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-[#1e40af]">
-            변호사가 설계한 학습·법률 콘텐츠 허브
+            변호사가 직접 쓰는 행정법·법률 칼럼
           </p>
           <h1 className="mb-4 text-3xl font-bold leading-tight sm:text-5xl">
-            수험생 성장을 돕는
+            판례와 수험 논점을
             <span className="block bg-gradient-to-r from-[#1e40af] to-[#3b82f6] bg-clip-text text-transparent">
-              엘루션 콘텐츠 플랫폼
+              쉽게 풀어 쓰는 엘루션
             </span>
           </h1>
           <p className="max-w-3xl text-zinc-600 sm:text-lg">
-            행정법 학습 서비스와 전문가 칼럼을 한곳에 모았습니다. 최신 기출, 판례 기반 요약, 실전형 학습 루틴으로
-            합격까지의 시간을 줄여드립니다.
+            행정법 판례 분석, 수험 전략, 법률·교육 인사이트를 본 사이트에서 정기적으로 발행합니다. 핵심 쟁점과
+            함정을 정리해 학습에 바로 쓸 수 있도록 돕습니다.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
-              href="https://adminlawq.ellution.co.kr/"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/blog"
               className="rounded-xl bg-[#1e40af] px-5 py-3 text-sm font-semibold text-white hover:bg-[#1e3a8a]"
             >
-              행정법Q 바로가기
+              전문가 칼럼 보기
             </Link>
             <Link
-              href="/blog"
+              href="/about"
               className="rounded-xl border border-zinc-200 bg-white px-5 py-3 text-sm font-semibold text-zinc-800 hover:bg-zinc-50"
             >
-              전문가 칼럼 보기
+              회사소개
             </Link>
           </div>
         </section>
 
         <section className="mb-10 grid grid-cols-1 gap-4 md:grid-cols-3">
-          <Link
-            href="https://adminlawq.ellution.co.kr/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group rounded-2xl border border-zinc-200 bg-white p-5 transition hover:border-zinc-300 hover:shadow-sm"
-          >
-            <p className="text-xs text-zinc-500">학습 서비스</p>
-            <p className="mt-1 text-lg font-semibold">행정법Q</p>
-            <p className="mt-2 text-sm leading-relaxed text-zinc-600">OX 인출 훈련과 오답노트 자동화로 회독 효율을 높입니다.</p>
-            <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-[#1e40af]">
-              학습 앱 바로가기
-              <span aria-hidden="true" className="transition group-hover:translate-x-0.5">→</span>
-            </span>
-          </Link>
-          <Link
-            href="/blog"
-            className="group rounded-2xl border border-zinc-200 bg-white p-5 transition hover:border-zinc-300 hover:shadow-sm"
-          >
-            <p className="text-xs text-zinc-500">전문 콘텐츠</p>
-            <p className="mt-1 text-lg font-semibold">Latest Insights</p>
-            <p className="mt-2 text-sm leading-relaxed text-zinc-600">판례 핵심과 함정을 빠르게 정리한 수험생 친화형 칼럼.</p>
-            <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-[#1e40af]">
-              전문가 칼럼 보기
-              <span aria-hidden="true" className="transition group-hover:translate-x-0.5">→</span>
-            </span>
-          </Link>
-          <Link
-            href="/about"
-            className="group rounded-2xl border border-zinc-200 bg-white p-5 transition hover:border-zinc-300 hover:shadow-sm"
-          >
-            <p className="text-xs text-zinc-500">운영 원칙</p>
-            <p className="mt-1 text-lg font-semibold">신뢰 기반 운영</p>
-            <p className="mt-2 text-sm leading-relaxed text-zinc-600">정책 페이지, SEO, 광고 컴플라이언스를 체계적으로 관리합니다.</p>
-            <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-[#1e40af]">
-              회사소개 보기
-              <span aria-hidden="true" className="transition group-hover:translate-x-0.5">→</span>
-            </span>
-          </Link>
+          <div className="rounded-2xl border border-zinc-200 bg-white p-5">
+            <p className="text-xs text-zinc-500">콘텐츠</p>
+            <p className="mt-1 text-lg font-semibold">판례 분석</p>
+            <p className="mt-2 text-sm leading-relaxed text-zinc-600">
+              대법원·헌법재판소 판례의 사실관계, 쟁점, 결론을 수험생 눈높이로 해설합니다.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-zinc-200 bg-white p-5">
+            <p className="text-xs text-zinc-500">학습</p>
+            <p className="mt-1 text-lg font-semibold">수험 전략</p>
+            <p className="mt-2 text-sm leading-relaxed text-zinc-600">
+              OX·사례형에서 자주 나오는 함정과 정리 공식을 칼럼으로 정리합니다.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-zinc-200 bg-white p-5">
+            <p className="text-xs text-zinc-500">운영</p>
+            <p className="mt-1 text-lg font-semibold">변호사 검수</p>
+            <p className="mt-2 text-sm leading-relaxed text-zinc-600">
+              모든 칼럼은 변호사의 검수를 거쳐 발행하며, 교육용 콘텐츠 기준으로 관리합니다.
+            </p>
+          </div>
         </section>
 
         <section className="mb-12">
@@ -121,15 +102,13 @@ export default function HomePage() {
                 행정법 판례 분석·수험 전략 칼럼을 정기적으로 발행합니다.
               </p>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <Link
-                href="/blog"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-[#1e40af] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1e3a8a]"
-              >
-                전체 글 보기
-                <span aria-hidden="true">→</span>
-              </Link>
-            </div>
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-[#1e40af] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1e3a8a]"
+            >
+              전체 글 보기
+              <span aria-hidden="true">→</span>
+            </Link>
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {latestPosts.map((post) => (

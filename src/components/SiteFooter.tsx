@@ -17,45 +17,12 @@ export function SiteFooter() {
     <footer className="border-t border-zinc-200 bg-white/90">
       <div className="mx-auto max-w-6xl px-4 py-10">
         {isHome && (
-          <>
-            <div className="mb-6 flex flex-col gap-4 rounded-xl border border-rose-200 bg-rose-50 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
-              <p className="text-sm leading-relaxed text-rose-800 sm:text-base">
-                본 서비스는 교육용 플랫폼으로, 개별 사건의 권리·의무 판단, 승소 가능성 예측 등 법률 상담 및 자문
-                기능을 제공하지 않습니다. 구체적인 상담은 변호사 등 법률 전문가를 통해 진행하시기 바랍니다.
-              </p>
-              <div className="flex shrink-0 flex-col items-stretch gap-2 sm:items-end">
-                <Link
-                  href="https://www.lawfirm.ellution.co.kr/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-rose-700 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-800 active:scale-[0.99]"
-                >
-                  법률사무소 엘루션 바로가기
-                  <span aria-hidden="true">→</span>
-                </Link>
-                <Link
-                  href="https://law.ellution.co.kr/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1 text-xs font-medium text-rose-700/80 underline-offset-2 transition hover:text-rose-800 hover:underline"
-                >
-                  변호사 법률 칼럼 보기
-                  <span aria-hidden="true">→</span>
-                </Link>
-              </div>
-            </div>
-
-            <div className="mb-8">
-              <Link
-                href="https://adminlawq.ellution.co.kr/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center rounded-xl bg-[#1e40af] px-5 py-3 text-sm font-semibold text-white hover:bg-[#1e3a8a]"
-              >
-                행정법Q 바로가기
-              </Link>
-            </div>
-          </>
+          <div className="mb-8 rounded-xl border border-rose-200 bg-rose-50 p-4 sm:p-5">
+            <p className="text-sm leading-relaxed text-rose-800 sm:text-base">
+              본 서비스는 교육용 플랫폼으로, 개별 사건의 권리·의무 판단, 승소 가능성 예측 등 법률 상담 및 자문
+              기능을 제공하지 않습니다. 구체적인 상담은 변호사 등 법률 전문가를 통해 진행하시기 바랍니다.
+            </p>
+          </div>
         )}
 
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">

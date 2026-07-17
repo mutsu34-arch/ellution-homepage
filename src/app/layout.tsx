@@ -46,14 +46,13 @@ export default function RootLayout({
         url: SITE_URL,
         email: "ellutionsoft@gmail.com",
         areaServed: "KR",
-        serviceType: "법률·부동산·교육 전문 콘텐츠 및 IT 서비스",
+        serviceType: "법률·교육 전문 칼럼 및 콘텐츠",
       },
       {
         "@type": "EducationalOrganization",
         name: "엘루션",
         url: SITE_URL,
-        sameAs: ["https://adminlawq.ellution.co.kr"],
-        description: "변호사가 설계한 행정법 학습 플랫폼과 전문 칼럼을 제공합니다.",
+        description: "변호사가 직접 쓰는 행정법·법률 전문 칼럼을 제공합니다.",
       },
     ],
   };

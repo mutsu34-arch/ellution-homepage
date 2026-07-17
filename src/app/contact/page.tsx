@@ -6,7 +6,7 @@ import { SITE_URL } from "@/lib/site-url";
 export const metadata: Metadata = {
   title: "문의하기 | 엘루션",
   description:
-    "엘루션 서비스, 콘텐츠 제휴, 광고, 법률·교육 칼럼 관련 문의 안내입니다. 이메일과 운영 채널, 운영 주체 정보를 확인하세요.",
+    "엘루션 콘텐츠 제휴, 광고, 법률·교육 칼럼 관련 문의 안내입니다. 이메일과 운영 주체 정보를 확인하세요.",
   alternates: {
     canonical: `${SITE_URL}/contact`,
   },
@@ -14,8 +14,8 @@ export const metadata: Metadata = {
 
 const inquiryTypes = [
   {
-    title: "서비스 이용 문의",
-    desc: "행정법Q 학습 서비스 이용 방법, 계정·결제 관련 문의를 받습니다.",
+    title: "콘텐츠 이용 문의",
+    desc: "칼럼 열람, 사이트 이용 방법 관련 문의를 받습니다.",
   },
   {
     title: "콘텐츠·광고 제휴",
@@ -23,16 +23,8 @@ const inquiryTypes = [
   },
   {
     title: "법률 상담 안내",
-    desc: "구체적 사건 상담은 법률사무소 엘루션을 통해 별도로 진행됩니다.",
-    cta: { label: "법률사무소 엘루션 홈페이지", href: "https://www.lawfirm.ellution.co.kr/" },
+    desc: "본 사이트는 교육용 콘텐츠를 제공하며, 개별 사건 상담·자문 기능은 제공하지 않습니다. 구체적인 상담은 변호사 등 법률 전문가를 통해 진행하시기 바랍니다.",
   },
-];
-
-const channels = [
-  { name: "행정법Q", href: "https://adminlawq.ellution.co.kr/" },
-  { name: "전문가 칼럼", href: "/blog" },
-  { name: "법률 칼럼 블로그", href: "https://law.ellution.co.kr/" },
-  { name: "법률사무소 엘루션", href: "https://www.lawfirm.ellution.co.kr/" },
 ];
 
 export default function ContactPage() {
@@ -45,7 +37,7 @@ export default function ContactPage() {
           </Link>
           <h1 className="mt-4 text-3xl font-bold text-zinc-900 sm:text-4xl">문의하기</h1>
           <p className="mt-3 text-lg text-zinc-600">
-            서비스, 콘텐츠 제휴, 광고 및 칼럼 관련 문의를 받습니다. 아래 안내를 확인해 주세요.
+            콘텐츠 제휴, 광고 및 칼럼 관련 문의를 받습니다. 아래 안내를 확인해 주세요.
           </p>
         </header>
 
@@ -54,23 +46,8 @@ export default function ContactPage() {
           <div className="space-y-3">
             {inquiryTypes.map((item) => (
               <div key={item.title} className="rounded-xl border border-zinc-200 bg-zinc-50 p-5">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <p className="text-base font-semibold text-zinc-900">{item.title}</p>
-                    <p className="mt-1.5 text-sm leading-relaxed text-zinc-600">{item.desc}</p>
-                  </div>
-                  {item.cta ? (
-                    <Link
-                      href={item.cta.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-rose-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-800 active:scale-[0.99]"
-                    >
-                      {item.cta.label}
-                      <span aria-hidden="true">→</span>
-                    </Link>
-                  ) : null}
-                </div>
+                <p className="text-base font-semibold text-zinc-900">{item.title}</p>
+                <p className="mt-1.5 text-sm leading-relaxed text-zinc-600">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -98,27 +75,14 @@ export default function ContactPage() {
             이메일 문의는 영업일 기준 순차적으로 답변드립니다. 문의 유형과 내용을 함께 적어주시면 더 빠른 안내가
             가능합니다.
           </p>
-        </section>
-
-        <section className="mb-6 rounded-2xl border border-zinc-200 bg-white p-7 sm:p-9">
-          <h2 className="mb-4 text-xl font-bold text-zinc-900">운영 채널</h2>
-          <div className="flex flex-wrap gap-2">
-            {channels.map((channel) => {
-              const isExternal = channel.href.startsWith("http");
-              return (
-              <Link
-                key={channel.name}
-                href={channel.href}
-                {...(isExternal
-                  ? { target: "_blank", rel: "noopener noreferrer" }
-                  : {})}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:border-[#1e40af] hover:text-[#1e40af]"
-              >
-                {channel.name}
-                <span aria-hidden="true">→</span>
-              </Link>
-              );
-            })}
+          <div className="mt-5">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:border-[#1e40af] hover:text-[#1e40af]"
+            >
+              전문가 칼럼 보기
+              <span aria-hidden="true">→</span>
+            </Link>
           </div>
         </section>
 

@@ -7,32 +7,25 @@ import { SITE_URL } from "@/lib/site-url";
 export const metadata: Metadata = {
   title: "회사소개 | 엘루션",
   description:
-    "엘루션은 변호사가 설계한 행정법 학습 서비스와 법률·교육 전문 칼럼을 제공하는 콘텐츠 플랫폼입니다. 운영 주체, 편집 기준, 제공 서비스를 안내합니다.",
+    "엘루션은 변호사가 직접 쓰는 행정법·법률 전문 칼럼을 제공하는 콘텐츠 사이트입니다. 운영 주체, 편집 기준, 제공 콘텐츠를 안내합니다.",
   alternates: {
     canonical: `${SITE_URL}/about`,
   },
 };
 
-const services = [
-  {
-    name: "행정법Q",
-    desc: "OX 인출 훈련과 오답노트 자동화로 회독 효율을 높이는 행정법 학습 웹앱입니다.",
-    href: "https://adminlawq.ellution.co.kr/",
-  },
+const offerings: { name: string; desc: string; href?: string }[] = [
   {
     name: "전문가 칼럼",
     desc: "행정법 판례 분석·수험 전략을 다루는 엘루션 공식 칼럼입니다.",
     href: "/blog",
   },
   {
-    name: "법률 칼럼 블로그",
-    desc: "변호사가 검수한 법률 정보를 일반인도 이해하기 쉽게 정리한 법률 칼럼 채널입니다.",
-    href: "https://law.ellution.co.kr/",
+    name: "판례 해설",
+    desc: "사실관계·쟁점·결론을 정리해 학습에 바로 활용할 수 있도록 해설합니다.",
   },
   {
-    name: "법률사무소 엘루션",
-    desc: "구체적인 사건 상담이 필요한 분을 위한 법률사무소 공식 채널입니다.",
-    href: "https://www.lawfirm.ellution.co.kr/",
+    name: "수험 전략",
+    desc: "OX·사례형에서 자주 나오는 함정과 정리 공식을 칼럼으로 제공합니다.",
   },
 ];
 
@@ -114,41 +107,31 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="mt-6">
-            <Link
-              href={author.profileUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-700 transition hover:border-[#1e40af] hover:text-[#1e40af]"
-            >
-              법률사무소 엘루션에서 자세히 보기
-              <span aria-hidden="true">→</span>
-            </Link>
-          </div>
         </section>
 
         <section className="mb-6 rounded-2xl border border-zinc-200 bg-white p-7 sm:p-9">
-          <h2 className="mb-4 text-xl font-bold text-zinc-900">제공 서비스</h2>
+          <h2 className="mb-4 text-xl font-bold text-zinc-900">제공 콘텐츠</h2>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {services.map((service) => {
-              const isExternal = service.href.startsWith("http");
-              return (
-              <Link
-                key={service.name}
-                href={service.href}
-                {...(isExternal
-                  ? { target: "_blank", rel: "noopener noreferrer" }
-                  : {})}
-                className="group rounded-xl border border-zinc-200 bg-zinc-50 p-5 transition hover:border-[#1e40af] hover:bg-blue-50/60"
-              >
-                <p className="flex items-center gap-1.5 text-base font-semibold text-zinc-900 group-hover:text-[#1e40af]">
-                  {service.name}
-                  <span aria-hidden="true">→</span>
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-zinc-600">{service.desc}</p>
-              </Link>
-              );
-            })}
+            {offerings.map((item) =>
+              item.href ? (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="group rounded-xl border border-zinc-200 bg-zinc-50 p-5 transition hover:border-[#1e40af] hover:bg-blue-50/60"
+                >
+                  <p className="flex items-center gap-1.5 text-base font-semibold text-zinc-900 group-hover:text-[#1e40af]">
+                    {item.name}
+                    <span aria-hidden="true">→</span>
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-zinc-600">{item.desc}</p>
+                </Link>
+              ) : (
+                <div key={item.name} className="rounded-xl border border-zinc-200 bg-zinc-50 p-5">
+                  <p className="text-base font-semibold text-zinc-900">{item.name}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-zinc-600">{item.desc}</p>
+                </div>
+              ),
+            )}
           </div>
         </section>
 

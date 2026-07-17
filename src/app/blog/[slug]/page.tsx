@@ -96,10 +96,10 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
       name: author.name,
       jobTitle: author.role,
       description: author.bio,
-      url: author.profileUrl,
+      url: `${siteUrl}/about`,
       worksFor: {
         "@type": "Organization",
-        name: author.lawFirm,
+        name: "엘루션",
       },
     },
     publisher: {
@@ -240,29 +240,6 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           </>
         )}
 
-        <section className="mt-10 rounded-xl border border-zinc-200 bg-zinc-50 p-5">
-          <h2 className="text-base font-semibold text-zinc-900 mb-2">관련 학습으로 이어가기</h2>
-          <p className="text-sm text-zinc-700 mb-3">
-            같은 주제의 판례를 더 읽고, 행정법Q에서 관련 문제를 바로 풀어보세요.
-          </p>
-          <div className="flex flex-wrap gap-2">
-            <a
-              href="https://adminlawq.ellution.co.kr/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex rounded-lg bg-[#1e40af] px-3.5 py-2 text-sm font-semibold text-white hover:bg-[#1e3a8a]"
-            >
-              행정법Q에서 관련 문제 풀기
-            </a>
-            <Link
-              href="/blog"
-              className="inline-flex rounded-lg border border-zinc-300 bg-white px-3.5 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-100"
-            >
-              전체 칼럼 보기
-            </Link>
-          </div>
-        </section>
-
         {relatedPosts.length > 0 && (
           <section className="mt-8">
             <h2 className="text-base font-semibold text-zinc-900 mb-3">관련된 다른 글 보기</h2>
@@ -303,15 +280,6 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                   </span>
                 ))}
               </div>
-              <a
-                href={author.profileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-[#1e40af] hover:underline"
-              >
-                변호사 프로필 보기
-                <span aria-hidden="true">→</span>
-              </a>
             </div>
           </div>
           <p className="mt-4 border-t border-zinc-100 pt-3 text-xs leading-relaxed text-zinc-500">
